@@ -6,8 +6,11 @@ unit MainUI;
 interface
 
 uses
+  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  cthreads,
+  {$ENDIF}{$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Buttons, ComCtrls, Menus, cthreads, inifiles, LCLIntf, LCLType, Clipbrd,
+  Buttons, ComCtrls, Menus, inifiles, LCLIntf, LCLType, Clipbrd,
   DateUtils,
 
   // Networking
@@ -28,7 +31,7 @@ uses
   Math, fpjson, fileutil,
 
   // Libs
-  BroadcastAPI, SpectrumVis3D, Types, LMessages, EditBtn, unitywsctrls;
+  BroadcastAPI, SpectrumVis3D, Types, LMessages, EditBtn;
 
 const
   SECT_MAIN = 'Main';
@@ -455,7 +458,6 @@ type
     Equaliser_Indic: TLabel;
     Filter_Box: TEdit;
     FlowPanel1: TFlowPanel;
-    IdHTTP1: TIdHTTP;
     Label1: TLabel;
     Label12: TLabel;
     Label13: TLabel;
@@ -4426,12 +4428,17 @@ var
   AFolder: string;
   D: TDataSource;
 begin
+  {$IFDEF MSWINDOWS}
+  AFolder := GetUserDir + 'AppData\Roaming\';
+  {$ELSE}
   AFolder := GetUserDir + '.config/';
+  {$ENDIF}
+
 
   if not DirectoryExists(AFolder) then
     raise Exception.Create('Config error, app cannot be configured');
 
-  AppData := AFolder + 'cod-ibroadcast/';
+  AppData := IncludeTrailingPathDelimiter(AFolder + 'cod-ibroadcast');
 
   if not DirectoryExists(AppData) then
     MkDir(AppData);
@@ -4440,16 +4447,17 @@ begin
     raise Exception.Create('Failed to create application working directory');
 
   // Prep folders
-  TempFolder := AppData + 'temp/';
+  TempFolder := IncludeTrailingPathDelimiter(AppData + 'temp');
   if not DirectoryExists(TempFolder) then
     MkDir(TempFolder);
 
-  DownloadsFolder := AppData + 'downloads/';
+  DownloadsFolder := IncludeTrailingPathDelimiter(AppData + 'downloads');
   if not DirectoryExists(DownloadsFolder) then
     MkDir(DownloadsFolder);
 
   // Artwork store
-  MediaStoreLocation := AppData + 'artwork-store/';
+  MediaStoreLocation := IncludeTrailingPathDelimiter(AppData + 'artwork-store');
+  ShowMessage(MediaStoreLocation);
 
   if ArtworkStore then
     begin

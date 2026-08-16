@@ -6,10 +6,11 @@ program iBroadcast;
 uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
+  lazcontrols,
   {$ENDIF}{$ENDIF}
   LibDefine,
   Interfaces, // this includes the LCL widgetset
-  Forms, lazcontrols, mainui, indylaz, dialogs,
+  Forms, mainui, dialogs,
   { you can add units after this }
   BroadcastAPI, SpectrumVis3D, uniqueinstanceraw, LoadingLibrary, About,
   taskexecution, iteminformation, ratingform, loginform, helpform,

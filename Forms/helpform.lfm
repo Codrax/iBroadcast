@@ -9,8 +9,8 @@ object Help: THelp
   ClientHeight = 400
   ClientWidth = 750
   Font.Height = -16
+  LCLVersion = '4.8.0.0'
   OnCreate = FormCreate
-  LCLVersion = '2.2.6.0'
   object Panel11: TPanel
     Left = 0
     Height = 50
@@ -31,7 +31,7 @@ object Help: THelp
       Left = 50
       Height = 50
       Top = 0
-      Width = 210
+      Width = 193
       Align = alLeft
       Caption = 'iBroadcast Help Center'
       Font.Height = -19
@@ -158,7 +158,7 @@ object Help: THelp
     Top = 50
     Width = 750
     OnChange = TabControl1Change
-    TabIndex = 3
+    TabIndex = 0
     Tabs.Strings = (
       'General'
       'Login'
@@ -196,6 +196,7 @@ object Help: THelp
         VertScrollBar.Tracking = True
         Align = alClient
         BorderStyle = bsNone
+        ParentBackground = False
         TabOrder = 0
         Visible = False
       end
@@ -204,21 +205,22 @@ object Help: THelp
         Height = 309
         Top = 0
         Width = 736
-        HorzScrollBar.Page = 483
+        HorzScrollBar.Page = 458
         HorzScrollBar.Tracking = True
-        VertScrollBar.Page = 300
+        VertScrollBar.Page = 301
         VertScrollBar.Tracking = True
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 309
         ClientWidth = 736
+        ParentBackground = False
         TabOrder = 1
         Visible = False
         object Label1: TLabel
           Left = 8
-          Height = 27
+          Height = 30
           Top = 16
-          Width = 341
+          Width = 328
           Caption = 'Welcome to iBroadcast for Linux!'
           Font.Height = -21
           Font.Style = [fsBold]
@@ -227,42 +229,42 @@ object Help: THelp
         end
         object Label2: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 48
-          Width = 247
+          Width = 225
           Caption = 'Here are a few tips to get started'
           ParentColor = False
         end
         object Label3: TLabel
           Left = 8
-          Height = 140
+          Height = 147
           Top = 88
-          Width = 475
+          Width = 442
           Caption = '- Download your favorite tracks to have avalabile offline'#10'- Manage playlists, ratings and your library'#10'- Minimise to Popup View to have a always visible mini player'#10'- Use the queue to arrange tracks in any order you like'#10'- Open the properties pane for more information for anything'#10'- Open your account page to view logged in devices'#10'- Search your library with filters to find what you are looking for'
           ParentColor = False
         end
         object Label4: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 280
-          Width = 144
+          Width = 131
           Caption = 'Enjoy iBroadcast! :)'
           ParentColor = False
         end
         object Label5: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 248
-          Width = 276
+          Width = 254
           Caption = 'Want to contribute? Please do on the'
           ParentColor = False
         end
         object Label6: TLabel
           Cursor = crHandPoint
           Left = 288
-          Height = 20
+          Height = 21
           Top = 248
-          Width = 187
+          Width = 170
           Caption = 'offical GitHub repository'
           Font.Color = clHighlight
           Font.Height = -16
@@ -277,19 +279,20 @@ object Help: THelp
         Height = 309
         Top = 0
         Width = 736
-        HorzScrollBar.Page = 599
+        HorzScrollBar.Page = 592
         HorzScrollBar.Tracking = True
         VertScrollBar.Page = 309
         VertScrollBar.Tracking = True
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 309
-        ClientWidth = 725
+        ClientWidth = 719
+        ParentBackground = False
         TabOrder = 2
         Visible = False
         object Label7: TLabel
           Left = 8
-          Height = 27
+          Height = 30
           Top = 16
           Width = 107
           Caption = 'Logging in'
@@ -300,17 +303,17 @@ object Help: THelp
         end
         object Label8: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 48
-          Width = 189
+          Width = 177
           Caption = 'Instructions on logging in'
           ParentColor = False
         end
         object Label9: TLabel
           Left = 8
-          Height = 60
+          Height = 63
           Top = 104
-          Width = 589
+          Width = 584
           Caption = '1) Open the login page'#10'This is done when opening iBroadcast or you can Log out via Menu -> Extras -> Log off'
           Constraints.MaxWidth = 600
           ParentColor = False
@@ -318,54 +321,54 @@ object Help: THelp
         end
         object Label10: TLabel
           Left = 8
-          Height = 60
+          Height = 63
           Top = 184
-          Width = 520
+          Width = 476
           Caption = '2) Enter your login token'#10'To obtain a login token, go to media.ibroadcast.com, then account -> '#10'Apps -> iBroadcast for Linux and click on enable'
           ParentColor = False
           WordWrap = True
         end
         object Label11: TLabel
           Left = 8
-          Height = 40
+          Height = 42
           Top = 264
-          Width = 375
+          Width = 341
           Caption = '3) Enter app ID (Optional for developers)'#10'Click the 3 dots and click "Enable advanced login"'
           ParentColor = False
           WordWrap = True
         end
         object Label12: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 320
-          Width = 114
+          Width = 106
           Caption = '4) Press "login"'
           ParentColor = False
           WordWrap = True
         end
         object Label13: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 360
-          Width = 150
+          Width = 137
           Caption = '5) Enjoy iBroadcast!'
           ParentColor = False
           WordWrap = True
         end
         object Label14: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 448
-          Width = 591
+          Width = 546
           Caption = 'If something did not go according to plan, please report a issue on Github.com!'
           ParentColor = False
           WordWrap = True
         end
         object Label15: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 424
-          Width = 32
+          Width = 30
           Caption = 'Info:'
           ParentColor = False
           WordWrap = True
@@ -383,14 +386,15 @@ object Help: THelp
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 309
-        ClientWidth = 725
+        ClientWidth = 719
+        ParentBackground = False
         TabOrder = 3
         Visible = False
         object Label16: TLabel
           Left = 8
-          Height = 27
+          Height = 30
           Top = 16
-          Width = 93
+          Width = 87
           Caption = 'Playback'
           Font.Height = -21
           Font.Style = [fsBold]
@@ -399,25 +403,25 @@ object Help: THelp
         end
         object Label17: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 48
-          Width = 117
+          Width = 106
           Caption = 'Music playback'
           ParentColor = False
         end
         object Label18: TLabel
           Left = 8
-          Height = 200
+          Height = 210
           Top = 120
-          Width = 380
+          Width = 350
           Caption = '1) Streaming'#10' This option streams the song from the official '#10'iBroadcast.com server'#10'2) Cloud download'#10' This option is like streaming but downloads the '#10'currently playing song locally for smooth playback'#10'3) Local'#10' This option is downloading the song you want to'#10'listen to on your computer. Just right click on a '#10'track, albums, artist or playlist and click Download!'
           ParentColor = False
         end
         object Label19: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 88
-          Width = 323
+          Width = 294
           Caption = 'There are three playback options avalabile:'
           ParentColor = False
         end
@@ -437,29 +441,30 @@ object Help: THelp
         Height = 309
         Top = 0
         Width = 736
-        HorzScrollBar.Page = 619
+        HorzScrollBar.Page = 569
         HorzScrollBar.Tracking = True
         VertScrollBar.Page = 309
         VertScrollBar.Tracking = True
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 309
-        ClientWidth = 725
+        ClientWidth = 719
+        ParentBackground = False
         TabOrder = 5
         Visible = False
         object Label30: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 48
-          Width = 175
+          Width = 159
           Caption = 'Shortcuts in iBroadcast'
           ParentColor = False
         end
         object Label31: TLabel
           Left = 8
-          Height = 27
+          Height = 30
           Top = 16
-          Width = 204
+          Width = 195
           Caption = 'Keyboard Shortcuts'
           Font.Height = -21
           Font.Style = [fsBold]
@@ -972,9 +977,9 @@ object Help: THelp
         end
         object Label67: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 440
-          Width = 30
+          Width = 28
           Caption = 'Tip:'
           Font.Height = -16
           Font.Style = [fsBold]
@@ -983,9 +988,9 @@ object Help: THelp
         end
         object Label68: TLabel
           Left = 48
-          Height = 20
+          Height = 21
           Top = 440
-          Width = 571
+          Width = 521
           Caption = 'To reset the playback speed right click on the slider, or select It and press ''R'''
           ParentColor = False
         end
@@ -1002,22 +1007,23 @@ object Help: THelp
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 309
-        ClientWidth = 725
+        ClientWidth = 719
+        ParentBackground = False
         TabOrder = 4
         Visible = False
         object Label21: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 48
-          Width = 184
+          Width = 174
           Caption = 'Downloading your music'
           ParentColor = False
         end
         object Label22: TLabel
           Left = 8
-          Height = 27
+          Height = 30
           Top = 16
-          Width = 115
+          Width = 110
           Caption = 'Downloads'
           Font.Height = -21
           Font.Style = [fsBold]
@@ -1046,9 +1052,9 @@ object Help: THelp
         end
         object Label25: TLabel
           Left = 8
-          Height = 20
+          Height = 21
           Top = 216
-          Width = 156
+          Width = 154
           Caption = 'Downloads coloring'
           Font.Height = -16
           Font.Style = [fsBold]
