@@ -19,8 +19,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainUI"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="4428"/>
-        <CursorPos X="35" Y="4461"/>
+        <TopLine Value="5182"/>
+        <CursorPos X="51" Y="5191"/>
         <UsageCount Value="72"/>
         <Bookmarks Count="3">
           <Item0 X="16" Y="3099" ID="3"/>
@@ -656,7 +656,7 @@
         <Loaded Value="True"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="24">
+    <JumpHistory HistoryIndex="27">
       <Position>
         <Filename Value="mainui.pas"/>
         <Caret Line="31" Column="71" TopLine="31"/>
@@ -756,6 +756,18 @@
       <Position>
         <Filename Value="mainui.pas"/>
         <Caret Line="1042" Column="15" TopLine="1020"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="4465" Column="60" TopLine="4440"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="4763" Column="60" TopLine="4744"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="4782" Column="34" TopLine="4744"/>
       </Position>
     </JumpHistory>
     <RunParams>

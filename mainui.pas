@@ -4457,7 +4457,6 @@ begin
 
   // Artwork store
   MediaStoreLocation := IncludeTrailingPathDelimiter(AppData + 'artwork-store');
-  ShowMessage(MediaStoreLocation);
 
   if ArtworkStore then
     begin
@@ -5194,7 +5193,7 @@ begin
 
         // Data
         LastLine := -1;
-        EmptyString := 'Could not load home page';
+        EmptyString := 'Home page is empty';
 
         { I = current column (also, FitX) }
         { J = current line }

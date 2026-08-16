@@ -1782,7 +1782,7 @@ object Main: TMain
         Top = 0
         Width = 50
         Align = alLeft
-        Caption = '𝄙'
+        Caption = '≡'
         Font.Height = -24
         Font.Style = [fsBold]
         ParentFont = False
