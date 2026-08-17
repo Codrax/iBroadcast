@@ -486,9 +486,14 @@ type
     Label_UpdateStat: TLabel;
     Label50: TLabel;
     Label51: TLabel;
+    MenuTray_Exit: TMenuItem;
+    MenuTray_Show: TMenuItem;
     Menu_PlayNext: TMenuItem;
     Option_checkupdates: TCheckBox;
+    Option_minimizetrayclose: TCheckBox;
     PeriodicAccessTokenRefresh: TTimer;
+    Separator2: TMenuItem;
+    TrayMenu: TPopupMenu;
     Stat_Viewer: TLabel;
     Label20: TLabel;
     Label21: TLabel;
@@ -673,6 +678,8 @@ type
     procedure Label21Click(Sender: TObject);
     procedure MenuItem12Click(Sender: TObject);
     procedure MenuItem13Click(Sender: TObject);
+    procedure MenuTray_ExitClick(Sender: TObject);
+    procedure MenuTray_ShowClick(Sender: TObject);
     procedure Menu_PlayNextClick(Sender: TObject);
     procedure Music_SpeedKeyPress(Sender: TObject; var Key: char);
     procedure Music_SpeedMouseUp(Sender: TObject; Button: TMouseButton;
@@ -760,6 +767,8 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure ToggleBox6Change(Sender: TObject);
     procedure ToggleVisual(Sender: TObject);
+    procedure TrayIcon1Click(Sender: TObject);
+    procedure Visualisation_PlayerPaint(Sender: TObject);
     procedure VisualRenderTimer(Sender: TObject);
   private
     function GetScrollMax: integer;
@@ -769,6 +778,9 @@ type
   private
     var
       CloudDownloader: TCloudDownloadSongThread;
+
+    // Visualisations
+    FSpectrumVisualisation: TSpectrum;
 
     // Utils
     function  PageToName(APage: TPage): string;
@@ -1046,6 +1058,8 @@ var
   SortType: TSortType;
   SortingList: TArray<integer>;
 
+  CurrentVisualisationData: TFFTData;
+
   // Page custom draw
   HomeColumns: integer;
 
@@ -1063,9 +1077,6 @@ var
   { Slider }
   SliderPressed: boolean;
   LastPlayState: TPlayStatus;
-
-  // Visualisations
-  Spectrum_Player: TSpectrum;
 
 implementation
 
@@ -3190,7 +3201,7 @@ begin
   // Get Press position
   IndexHover := -1;
   for I := 0 to High(SortingList) do
-    if DrawItems[SortingList[I]].Bounds.Contains( Point(X, Y) ) then
+    if (SortingList[I] >= 0) and (SortingList[I] < Length(DrawItems)) and DrawItems[SortingList[I]].Bounds.Contains( Point(X, Y) ) then
       begin
         IndexHover := SortingList[I];
         Break;
@@ -3367,6 +3378,12 @@ end;
 
 procedure TMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
+  if Visible and Option_minimizetrayclose.Checked then begin
+    Hide;
+    CanClose := false;
+    Exit;
+  end;
+
   // Save Settings
   AppSettings(false);
 
@@ -3525,6 +3542,17 @@ end;
 procedure TMain.MenuItem13Click(Sender: TObject);
 begin
   SelectPage( TPage.Account );
+end;
+
+procedure TMain.MenuTray_ExitClick(Sender: TObject);
+begin
+  Application.Mainform.Close;
+end;
+
+procedure TMain.MenuTray_ShowClick(Sender: TObject);
+begin
+  Show;
+  BringToFront;
 end;
 
 procedure TMain.Menu_PlayNextClick(Sender: TObject);
@@ -3925,11 +3953,11 @@ begin
   DefaultPicture.LoadFromFile(RuntimeFolder + 'art.jpeg');
 
   // Create Spectrum
-  Spectrum_Player := TSpectrum.Create(round(Visualisation_Player.Width * ScaleFactor), round(Visualisation_Player.Height * ScaleFactor));
-  Spectrum_Player.Height := Visualisation_Player.Height - 20;
-  Spectrum_Player.Peak := clMenuText;
-  Spectrum_Player.Pen:= RGBToColor(255, 105, 180);
-  Spectrum_Player.BackColor := clWindow;
+  FSpectrumVisualisation := TSpectrum.Create(round(Visualisation_Player.Width * ScaleFactor), round(Visualisation_Player.Height * ScaleFactor));
+  FSpectrumVisualisation.Height := Visualisation_Player.Height - 20;
+  FSpectrumVisualisation.Peak := clMenuText;
+  FSpectrumVisualisation.Pen:= RGBToColor(255, 105, 180);
+  FSpectrumVisualisation.BackColor := clWindow;
 
   // Notify
   OnWorkStatusChange := APIStatusChanged;
@@ -4514,6 +4542,19 @@ procedure TMain.ToggleVisual(Sender: TObject);
 begin
   Visualisation_Player.Visible := not Visualisation_Player.Visible;
   Equaliser_Indic.Visible:=Visualisation_Player.Visible;
+end;
+
+procedure TMain.TrayIcon1Click(Sender: TObject);
+begin
+
+end;
+
+procedure TMain.Visualisation_PlayerPaint(Sender: TObject);
+begin
+  if (Player = nil) or (not Player.IsFileOpen) or (Player.PlayStatus <> TPlayStatus.Playing) then
+    Exit;
+
+  FSpectrumVisualisation.Draw(TPaintbox(Sender).Canvas, CurrentVisualisationData, 0, -10);
 end;
 
 procedure TMain.VisualRenderTimer(Sender: TObject);
@@ -6209,19 +6250,17 @@ begin
 end;
 
 procedure TMain.RenderVisualisations;
-var
-  FFTFata: TFFTData;
 begin
   if (Player = nil) or (not Player.IsFileOpen) or (Player.PlayStatus <> TPlayStatus.Playing) then
     Exit;
 
-  BASS_ChannelGetData(Player.Stream, @FFTFata, BASS_DATA_FFT1024);
+  BASS_ChannelGetData(Player.Stream, @CurrentVisualisationData, BASS_DATA_FFT1024);
 
   if Visible and Visualisation_Player.Visible then
-    Spectrum_Player.Draw(Visualisation_Player.Canvas, FFTFata, 0, -10);
+    Visualisation_Player.Invalidate;;
 
   if (PopupPlay <> nil) and PopupPlay.Visible and PopupPlay.Visualisation_Player.Visible then
-    Spectrum_Popup.Draw(PopupPlay.Visualisation_Player.Canvas, FFTFata, 0, -10);
+    PopupPlay.Visualisation_Player.Invalidate;
 end;
 
 procedure TMain.StopThreads;
@@ -6802,6 +6841,7 @@ begin
       if Load then
         // LOAD
         begin
+          Option_minimizetrayclose.Checked := ReadBool(SECT_APP, 'Minimize on close', Option_minimizetrayclose.Checked);
           Option_checkupdates.Checked := ReadBool(SECT_APP, 'Updates checking', Option_checkupdates.Checked);
           LastUpdateCheck := ReadDateTime(SECT_APP, 'Last update check', LastUpdateCheck);
           if LastUpdateCheck > Now then
@@ -6833,6 +6873,7 @@ begin
       else
         // SAVE
         begin
+          WriteBool(SECT_APP, 'Minimize on close', Option_minimizetrayclose.Checked);
           WriteBool(SECT_APP, 'Updates checking', Option_checkupdates.Checked);
           WriteDateTime(SECT_APP, 'Last update check', LastUpdateCheck);
           WriteBool(SECT_GENERAL, 'Visualisations', Visualisation_Player.Visible);

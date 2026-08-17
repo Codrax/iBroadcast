@@ -12,9 +12,9 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, mainui, dialogs, Cod.SysUtils,
   { you can add units after this }
-  BroadcastAPI, SpectrumVis3D, uniqueinstanceraw, LoadingLibrary, About,
-  taskexecution, iteminformation, ratingform, loginform,
-  createplaylistform, PopupPlayForm, HashFunctions;
+  BroadcastAPI, SpectrumVis3D, uniqueinstanceraw, LoadingLibrary,
+  taskexecution, iteminformation, ratingform, loginform, createplaylistform,
+  HashFunctions;
 
 {$R *.res}
 
@@ -45,8 +45,10 @@ begin
 
       if Param = '--help' then
         ShellRun(URL_HELP);
-    end;
 
+      if Param = '--tray' then
+        Application.ShowMainForm:= false;
+    end;
 
   Application.Initialize;
   Application.CreateForm(TMain, Main);

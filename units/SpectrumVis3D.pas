@@ -130,7 +130,8 @@ implementation
               end;
          end;
 
-          Canvas.Draw(0, 0, VisBuff);
+          if Canvas <> nil then
+             Canvas.Draw(0, 0, VisBuff);
        end;
 end.
 

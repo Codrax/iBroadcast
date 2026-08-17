@@ -23,7 +23,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
+            <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;forms"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -55,6 +55,9 @@
           </Linking>
           <Other>
             <CustomOptions Value="-dSTRINGCOMPATABILITY"/>
+            <OtherDefines Count="1">
+              <Define0 Value="STRINGCOMPATABILITY"/>
+            </OtherDefines>
           </Other>
         </CompilerOptions>
       </Item>
@@ -66,7 +69,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
+            <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;forms"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -128,40 +131,6 @@
         <UnitName Value="MainUI"/>
       </Unit>
       <Unit>
-        <Filename Value="Forms/createplaylistform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="CreatePlaylist"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/popupplayform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="PopupPlay"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="PopupPlayForm"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/shutdownform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="shutdown"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/about.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="AboutDialog"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="About"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/about.lfm"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="units/HashFunctions.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
@@ -169,6 +138,37 @@
         <Filename Value="units/libdefine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="LibDefine"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/about.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/about.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutDialog"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="About"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/createplaylistform.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/createplaylistform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CreatePlaylist"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/iteminformation.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/iteminformation.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ItemInfo"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -179,7 +179,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
+      <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;forms"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -215,6 +215,9 @@
       </Item>
       <Item>
         <Name Value="EIdSocketError"/>
+      </Item>
+      <Item>
+        <Name Value="RunError(201)"/>
       </Item>
     </Exceptions>
   </Debugging>

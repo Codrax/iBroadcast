@@ -2,16 +2,14 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <BuildModes Active="Debug"/>
+    <BuildModes Active="Release"/>
     <Units>
       <Unit>
         <Filename Value="iBroadcast.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="6"/>
-        <CursorPos X="26" Y="47"/>
-        <UsageCount Value="115"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="42" Y="50"/>
+        <UsageCount Value="118"/>
       </Unit>
       <Unit>
         <Filename Value="mainui.pas"/>
@@ -20,77 +18,141 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainUI"/>
-        <TopLine Value="6206"/>
-        <CursorPos X="22" Y="6212"/>
-        <UsageCount Value="115"/>
+        <TopLine Value="7"/>
+        <CursorPos X="40" Y="25"/>
+        <UsageCount Value="118"/>
+        <Bookmarks Count="3">
+          <Item0 Y="6260" Left="1" Top="6229" ID="1"/>
+          <Item1 X="91" Y="4557" Left="1" Top="4527" ID="2"/>
+          <Item2 X="40" Y="1061" Left="1" Top="1024" ID="3"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/createplaylistform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="CreatePlaylist"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="9"/>
-        <CursorPos X="13" Y="59"/>
-        <UsageCount Value="99"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/popupplayform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="PopupPlay"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="PopupPlayForm"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="19"/>
-        <CursorPos X="26" Y="55"/>
-        <UsageCount Value="96"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/shutdownform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="shutdown"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="24" Y="9"/>
-        <UsageCount Value="84"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/about.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="AboutDialog"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="About"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="51" Y="9"/>
-        <UsageCount Value="21"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/about.lfm"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="21"/>
-        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
         <Filename Value="units/HashFunctions.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="24"/>
       </Unit>
       <Unit>
         <Filename Value="units/libdefine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="LibDefine"/>
         <EditorIndex Value="4"/>
-        <CursorPos X="68" Y="32"/>
-        <UsageCount Value="21"/>
+        <CursorPos Y="39"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/about.lfm"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/about.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutDialog"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="About"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/createplaylistform.lfm"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/createplaylistform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CreatePlaylist"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/iteminformation.lfm"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/iteminformation.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ItemInfo"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/createplaylistform.pas"/>
+        <ComponentName Value="CreatePlaylist"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9"/>
+        <CursorPos X="13" Y="59"/>
+        <UsageCount Value="100"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/popupplayform.pas"/>
+        <ComponentName Value="PopupPlay"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PopupPlayForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="20"/>
+        <CursorPos X="28" Y="28"/>
+        <UsageCount Value="97"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/shutdownform.pas"/>
+        <ComponentName Value="shutdown"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="24" Y="9"/>
+        <UsageCount Value="85"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/about.pas"/>
+        <ComponentName Value="AboutDialog"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="About"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="51" Y="9"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/about.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="22"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
         <Filename Value="unitinfo.pas"/>
@@ -110,12 +172,10 @@
         <ComponentName Value="Login"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="48"/>
         <CursorPos X="4" Y="74"/>
-        <UsageCount Value="11"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="12"/>
       </Unit>
       <Unit>
         <Filename Value="Forms/helpform.pas"/>
@@ -155,10 +215,10 @@
       </Unit>
       <Unit>
         <Filename Value="BroadcastAPI.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="445"/>
-        <CursorPos X="35" Y="467"/>
-        <UsageCount Value="42"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="468"/>
+        <CursorPos X="31" Y="496"/>
+        <UsageCount Value="43"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -724,11 +784,10 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="324"/>
         <CursorPos X="6" Y="348"/>
-        <UsageCount Value="12"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="/lazarus/fpc/3.2.2/source/rtl/objpas/math.pp"/>
@@ -836,20 +895,15 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Graphics.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <CursorPos Y="14"/>
-        <UsageCount Value="10"/>
-        <Bookmarks Count="1">
-          <Item0 X="19" Y="867" Left="1" Top="842" ID="1"/>
-        </Bookmarks>
-        <Loaded Value="True"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Internet.pas"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <CursorPos Y="14"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="/lazarus/lcl/graphics.pp"/>
@@ -867,11 +921,10 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.SysUtils.pas"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="458"/>
-        <CursorPos X="55" Y="475"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="426"/>
+        <CursorPos X="58" Y="429"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Audio.pas"/>
@@ -882,10 +935,9 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Helpers.pas"/>
-        <EditorIndex Value="11"/>
-        <CursorPos X="14" Y="14"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="31" Y="22"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="/lazarus/fpc/3.2.2/source/rtl/win/wininc/struct.inc"/>
@@ -896,19 +948,16 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Helpers.Vcl.pas"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="-1"/>
         <CursorPos Y="14"/>
         <UsageCount Value="16"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.JSON.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="13"/>
-        <TopLine Value="928"/>
-        <CursorPos X="23" Y="964"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1437"/>
+        <CursorPos X="23" Y="1462"/>
         <UsageCount Value="17"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.JSON.Utils.pas"/>
@@ -919,11 +968,10 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Forms.pas"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="28"/>
         <CursorPos X="8" Y="38"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Windows.pas"/>
@@ -1015,9 +1063,12 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="42" Y="250"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="275"/>
+        <CursorPos X="28" Y="286"/>
         <UsageCount Value="14"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.Enterprise.pas"/>
@@ -1049,10 +1100,55 @@
       <Unit>
         <Filename Value="/usr/lib/lazarus/lcl/lclintf.pas"/>
         <UnitName Value="LCLIntf"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="38"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units/SpectrumVis3D.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="46"/>
+        <CursorPos X="69" Y="50"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="forms/popupplayform.pas"/>
+        <ComponentName Value="PopupPlay"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PopupPlayForm"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="13"/>
+        <CursorPos X="27" Y="36"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/lib/lazarus/lcl/include/graphiccontrol.inc"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="72"/>
+        <CursorPos Y="97"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="22881"/>
+        <CursorPos Y="22937"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSL.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="2397"/>
+        <CursorPos X="24" Y="2450"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
     </Units>
     <OtherDefines Count="1">
@@ -1060,124 +1156,124 @@
     </OtherDefines>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.SysUtils.pas"/>
-        <Caret Line="27" Column="21" TopLine="13"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22904" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.JSON.pas"/>
-        <Caret Line="28" Column="71"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <Caret Line="17" Column="42"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22911" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <Caret Line="41" Column="46" TopLine="2"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <Caret Line="428" Column="62" TopLine="389"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22911" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <Caret Line="433" Column="19" TopLine="394"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <Caret Line="517" Column="134" TopLine="485"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22911" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Platform.Lazarus.pas"/>
-        <Caret Line="348" Column="6" TopLine="324"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.Forms.pas"/>
-        <Caret Line="38" Column="8" TopLine="28"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22911" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="2169" Column="24" TopLine="2146"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="2154" Column="33" TopLine="2147"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22911" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="2151" Column="34" TopLine="2147"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.SysUtils.pas"/>
-        <Caret Line="33" Column="72"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22911" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.SysUtils.pas"/>
-        <Caret Line="108" Column="37" TopLine="74"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22910" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.SysUtils.pas"/>
-        <Caret Line="475" Column="55" TopLine="458"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22913" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="510" Column="20" TopLine="487"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22901" Column="26" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="619" Column="43" TopLine="596"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22903" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="655" Column="57" TopLine="627"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22904" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="2169" Column="17" TopLine="2147"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22913" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="3646" Column="20" TopLine="3623"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22914" TopLine="22863"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="4521" Column="3" TopLine="4519"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22919" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="844" Column="15" TopLine="817"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22914" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="6230" TopLine="6206"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22909" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.JSON.pas"/>
-        <Caret Line="936" Column="3" TopLine="911"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22914" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="99" Column="22" TopLine="77"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22909" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="../Cod-Library-Pack/source/Cod.JSON.pas"/>
-        <Caret Line="936" Column="3" TopLine="911"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22919" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="99" Column="22" TopLine="76"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22891" Column="43" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="73" TopLine="48"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSLHeaders.pas"/>
+        <Caret Line="22914" TopLine="22869"/>
       </Position>
       <Position>
-        <Filename Value="Forms/loginform.pas"/>
-        <Caret Line="74" Column="4" TopLine="48"/>
+        <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.pas"/>
+        <Caret Line="290" Column="55" TopLine="275"/>
       </Position>
       <Position>
-        <Filename Value="mainui.pas"/>
-        <Caret Line="6212" Column="22" TopLine="6206"/>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/Indy10/Protocols/IdSSLOpenSSL.pas"/>
+        <Caret Line="239" Column="61" TopLine="201"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -1191,15 +1287,17 @@
       </Modes>
     </RunParams>
     <HistoryLists>
-      <List Name="LaunchingApplication" Type="File" Count="3">
+      <List Name="LaunchingApplication" Type="File" Count="4">
         <Item1 Value="/usr/bin/gnome-terminal -t &apos;Lazarus Run Output&apos; -e &apos;$(LazarusDir)/tools/runwait.sh $(TargetCmdLine)&apos;"/>
         <Item2 Value="C:\WINDOWS\system32\cmd.exe \C ${TargetCmdLine}"/>
         <Item3 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+        <Item4 Value="/usr/bin/konsole -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </List>
-      <List Name="CommandLineParameters" Count="3">
+      <List Name="CommandLineParameters" Count="4">
         <Item1 Value="--debug"/>
-        <Item2 Value="--offline"/>
-        <Item3 Value="--help"/>
+        <Item2 Value="--debug --tray"/>
+        <Item3 Value="--offline"/>
+        <Item4 Value="--help"/>
       </List>
     </HistoryLists>
   </ProjectSession>
