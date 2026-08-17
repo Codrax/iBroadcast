@@ -11,7 +11,7 @@ uses
   {$ENDIF}{$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Buttons, ComCtrls, Menus, inifiles, LCLIntf, LCLType, Clipbrd,
-  DateUtils,
+  Cod.CodrutSoftware.API.Update, DateUtils,
 
   // Networking
   IdSSLOpenSSL, IdHTTP, IdComponent,
@@ -23,6 +23,7 @@ uses
   Cod.ArrayHelpers, Cod.Math,  Cod.Files, Cod.Types,
   Cod.StringUtils, Cod.Internet, Cod.Version, Cod.Graphics,
   Cod.SysUtils, Cod.Forms, Cod.Helpers, Cod.Helpers.Vcl,
+  Cod.JSON, Cod.JSON.Utils, Cod.Platform.Lazarus,
 
   // Audio
   Bass, Cod.Audio,
@@ -32,10 +33,6 @@ uses
 
   // Libs
   BroadcastAPI, SpectrumVis3D, Types, LMessages, EditBtn;
-
-const
-  SECT_MAIN = 'Main';
-  SECT_META = 'Meta';
 
 type
   // Cardinals
@@ -190,6 +187,9 @@ type
 
   { TLoginThread }
   TLoginThread = class(TInstantTaskThread)
+  private
+    Succeeded: boolean;
+  public
     procedure DoWork; override;
     procedure DoFinish; override;
   end;
@@ -204,8 +204,6 @@ type
 
   { TDialogCheckUpdatesThread }
   TDialogCheckUpdatesThread = class(TDialogedTaskThread)
-    ServerVersion: TVersion;
-
     procedure DoPrepare; override;
     procedure DoWork; override;
     procedure DoFinish; override;
@@ -272,7 +270,14 @@ type
     procedure DoWork; override;
   end;
 
-  { TDialogUpdateRating }
+  { TDialogFetchingTokenCredentials }
+  TDialogFetchingTokenCredentials = class(TDialogedTaskThread)
+    OAuth2Code: string;
+    CodeVerifier: string;
+
+    procedure DoPrepare; override;
+    procedure DoWork; override;
+  end;
 
   { TDialogStopThreads }
   TDialogStopThreads = class(TDialogedTaskThread)
@@ -348,8 +353,8 @@ type
   end;
   TDrawItemPointer = ^TDrawItem;
 
-  { TDialogLibraryLoadThread }
-  TDialogLibraryLoadThread = class(TDialogedTaskThread)
+  { TDialogLibraryOfflineLoadThread }
+  TDialogLibraryOfflineLoadThread = class(TDialogedTaskThread)
     procedure LoadLibraryComponent(Source: TDataSource);
 
     procedure DoPrepare; override;
@@ -399,7 +404,6 @@ type
   TDownloadManager = class
   private
     const
-      CAT_DOWNLOAD = 'Downloads';
       SEPAR = ',';
 
   public
@@ -427,7 +431,6 @@ type
     procedure RemoveItem(ID: string; Source: TDataSource);
 
     (* Saving *)
-    function GetConfigFile: TIniFile;
     procedure LoadConfig;
     procedure SaveConfig;
 
@@ -483,7 +486,9 @@ type
     Label_UpdateStat: TLabel;
     Label50: TLabel;
     Label51: TLabel;
+    Menu_PlayNext: TMenuItem;
     Option_checkupdates: TCheckBox;
+    PeriodicAccessTokenRefresh: TTimer;
     Stat_Viewer: TLabel;
     Label20: TLabel;
     Label21: TLabel;
@@ -668,10 +673,13 @@ type
     procedure Label21Click(Sender: TObject);
     procedure MenuItem12Click(Sender: TObject);
     procedure MenuItem13Click(Sender: TObject);
+    procedure Menu_PlayNextClick(Sender: TObject);
     procedure Music_SpeedKeyPress(Sender: TObject; var Key: char);
     procedure Music_SpeedMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure Panel3Click(Sender: TObject);
     procedure Panel7Click(Sender: TObject);
+    procedure PeriodicAccessTokenRefreshTimer(Sender: TObject);
     procedure Popup_IDClick(Sender: TObject);
     procedure Popup_Playlist_RemoveClick(Sender: TObject);
     procedure Music_Menu1Click(Sender: TObject);
@@ -709,6 +717,7 @@ type
     procedure Popup_Queue_NowClick(Sender: TObject);
     procedure Popup_Queue_RemoveClick(Sender: TObject);
     procedure Queue_ShuffleClick(Sender: TObject);
+    procedure ScrollBox2Click(Sender: TObject);
     procedure Search_BoxButtonClick(Sender: TObject);
     procedure Search_BoxKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -886,7 +895,8 @@ type
     // Update
     procedure BackendUpdate(AUpdate: TDataSource);
   public
-
+    // Events
+    procedure DoException(Sender: TObject; E: Exception);
   end;
 
   // Notify
@@ -937,6 +947,9 @@ const
 
 var
   Main: TMain;
+
+  // System
+  VersionChecker: TStandardVersionCheckerUpdateUrl;
 
   // System
   AppData: string;
@@ -1007,6 +1020,7 @@ var
 
   // Info
   LoginScriptDone: boolean = false;
+  LoginServerConnectionEstablished: boolean = false;
 
   // Application
   SPECIAL_STATUS: string;
@@ -1162,9 +1176,8 @@ end;
 procedure TDialogCheckUpdatesThread.DoWork;
 begin
   try
-    //ServerVersion.APILoad('ibroadcast-linux');
-
-    Succeeded := true;
+    VersionChecker.Load;
+    Succeeded := VersionChecker.Loaded;
   except
     Succeeded := false;
   end;
@@ -1179,17 +1192,18 @@ var
 begin
   if Succeeded then
     begin
-      Main.Label_UpdateStat.Caption := ServerVersion.ToString();
-      Newer := ServerVersion.NewerThan(APP_VERSION);
+      Main.Label_UpdateStat.Caption := VersionChecker.ServerVersion.ToString();
+      Newer := VersionChecker.ServerVersion.NewerThan(APP_VERSION);
 
       // Status
       LastUpdateCheck := Now;
 
       // Update dialog
-      if Newer and (MessageDlg('New version released', 'There is a new version of iBroadcast avalabile to download. Version ' + ServerVersion.ToString()
+      if Newer and (MessageDlg('New version released',
+         'There is a new version of iBroadcast avalabile to download. Version ' + VersionChecker.ServerVersion.ToString()
       + #13'Would you like to download It now?',
         mtInformation, [mbYes, mbNo], 0) = mrYes) then
-          OpenURL('https://www.codrutsoft.com/apps/ibroadcast-linux/');
+          OpenURL('https://www.codrutsoft.com/apps/ibroadcast/');
     end
       else
         Main.Label_UpdateStat.Caption:='Failed to check for updates';
@@ -1201,13 +1215,13 @@ begin
   inherited;
 end;
 
-{ TDialogLibraryLoadThread }
+{ TDialogLibraryOfflineLoadThread }
 
-procedure TDialogLibraryLoadThread.LoadLibraryComponent(Source: TDataSource);
+procedure TDialogLibraryOfflineLoadThread.LoadLibraryComponent(Source: TDataSource);
 var
   Files: TStringList;
   Directory: string;
-  Ini: TIniFile;
+  Obj: IJObject;
   I: integer;
   Index: integer;
   AID: string;
@@ -1257,86 +1271,80 @@ end;
 begin
   Directory := TDownloaderClass.GetDir(Source);
 
-  Files := FindAllFiles(Directory, '*.ini', false);
+  Files := FindAllFiles(Directory, '*.json', false);
   Files.Sorted:=true;
 
   // Load
   for I := 0 to Files.Count-1 do begin
     DataFile := Files[I];
-    Ini := TIniFile.Create(DataFile);
-    with Ini do
-      try
-        try
-          AID := ChangeFileExt(ExtractFileName(DataFile), '');
-        except
-          Continue;
-        end;
+    try
+      Obj := TJValue.LoadFromFile(DataFile) as IJObject;
+      AID := ChangeFileExt(ExtractFileName(DataFile), '');
+    except
+      Continue;
+    end;
 
-        Index := AddNew;
-        case Source of
-          TDataSource.Tracks: with Tracks[Index] do begin
-            ID := AID;
+    Index := AddNew;
+    case Source of
+      TDataSource.Tracks: with Tracks[Index] do begin
+        ID := AID;
 
-            Title := ReadString(SECT_MAIN, 'Name', Title);
-            ArtworkID := ReadString(SECT_MAIN, 'Artwork', ArtworkID);
+        Title := Obj.Memory['name'].AsString;
+        ArtworkID := Obj.Memory['artwork'].AsString;
 
-            AlbumID := ReadString(SECT_META, 'Album', AlbumID);
-            ArtistID := ReadString(SECT_META, 'Artist', ArtistID);
+        AlbumID := Obj.Memory['album'].AsString;
+        ArtistID := Obj.Memory['artist'].AsString;
 
-            Year := ReadInteger(SECT_META, 'Year', Year);
-            Genre := ReadString(SECT_META, 'Genre', Genre);
-            LengthSeconds := ReadInteger(SECT_META, 'Length', LengthSeconds);
-            FileSize := ReadInteger(SECT_META, 'Size', FileSize);
-            Rating := ReadInteger(SECT_META, 'Rating', Rating);
-            Plays := ReadInteger(SECT_META, 'Plays', Plays);
-            AudioType := ReadString(SECT_META, 'Audio Type', AudioType);
-          end;
-
-          TDataSource.Albums: with Albums[Index] do begin
-            ID := AID;
-
-            AlbumName := ReadString(SECT_MAIN, 'Name', AlbumName);
-            TracksID := StringToArray(ReadString(SECT_MAIN, 'Tracks', ''));
-
-            ArtistID := ReadString(SECT_META, 'Artist', ArtistID);
-
-            Year := ReadInteger(SECT_META, 'Year', Year);
-            Rating := ReadInteger(SECT_META, 'Rating', Rating);
-          end;
-
-          TDataSource.Artists: with Artists[Index] do begin
-            ID := AID;
-
-            ArtistName := ReadString(SECT_MAIN, 'Name', ArtistName);
-            ArtworkID := ReadString(SECT_MAIN, 'Artwork', ArtworkID);
-            TracksID := StringToArray(ReadString(SECT_MAIN, 'Tracks', ''));
-
-            Rating := ReadInteger(SECT_META, 'Rating', Rating);
-          end;
-
-          TDataSource.Playlists: with Playlists[Index] do begin
-            ID := AID;
-
-            Name := ReadString(SECT_MAIN, 'Name', Name);
-            ArtworkID := ReadString(SECT_MAIN, 'Artwork', ArtworkID);
-            TracksID := StringToArray(ReadString(SECT_MAIN, 'Tracks', ''));
-
-            Description := ReadString(SECT_META, 'Description', Description);
-          end;
-        end;
-
-      finally
-        Free;
+        Year := Obj.Memory['year'].AsInteger;
+        Genre := Obj.Memory['genre'].AsString;
+        LengthSeconds := Obj.Memory['length'].AsInteger;
+        FileSize := Obj.Memory['size'].AsInteger;
+        Rating := Obj.Memory['rating'].AsInteger;
+        Plays := Obj.Memory['plays'].AsInteger;
+        AudioType := Obj.Memory['audio-type'].AsString;
       end;
+
+      TDataSource.Albums: with Albums[Index] do begin
+        ID := AID;
+
+        AlbumName := Obj.Memory['name'].AsString;
+        TracksID := StringToArray(Obj.Memory['tracks'].AsString);
+
+        ArtistID := Obj.Memory['artist'].AsString;
+
+        Year := Obj.Memory['year'].AsInteger;
+        Rating := Obj.Memory['rating'].AsInteger;
+      end;
+
+      TDataSource.Artists: with Artists[Index] do begin
+        ID := AID;
+
+        ArtistName := Obj.Memory['name'].AsString;
+        ArtworkID := Obj.Memory['artwork'].AsString;
+        TracksID := StringToArray(Obj.Memory['tracks'].AsString);
+
+        Rating := Obj.Memory['rating'].AsInteger;
+      end;
+
+      TDataSource.Playlists: with Playlists[Index] do begin
+        ID := AID;
+
+        Name := Obj.Memory['name'].AsString;
+        ArtworkID := Obj.Memory['artwork'].AsString;
+        TracksID := StringToArray(Obj.Memory['tracks'].AsString);
+
+        Description := Obj.Memory['description'].AsString;
+      end;
+    end;
   end;
 end;
 
-procedure TDialogLibraryLoadThread.DoPrepare;
+procedure TDialogLibraryOfflineLoadThread.DoPrepare;
 begin
   TaskExec.Title.Caption:='[Offline Mode] Loading local library...';
 end;
 
-procedure TDialogLibraryLoadThread.DoWork;
+procedure TDialogLibraryOfflineLoadThread.DoWork;
 begin
   EmptyLibrary;
 
@@ -1610,9 +1618,6 @@ begin
         CurrentValid := LastValid
       else
         try
-          if Current = '255182618' then
-            Current := Current;
-
           CurrentValid := FindDownloadID(Current);
         except
           CurrentValid := false;
@@ -1652,8 +1657,8 @@ begin
   // Scan
   for I := 0 to List.Count-1 do
     begin
-      { .INI is the master file extension, all downloads kind have one! }
-      FilePath := Format('%S%S.ini', [DownloadDir, List[I]]);
+      { .JSON is the master file extension, all downloads kind have one! }
+      FilePath := Format('%S%S.json', [DownloadDir, List[I]]);
 
       if not fileexists(FilePath) then
         Result.Add( List[I] );
@@ -1664,9 +1669,9 @@ procedure TDownloaderClass.DownloadType(DownKind: TDataSource);
 var
   NewItems: TStringList;
   Directory, BaseFile, ExportFile: string;
-  Info: TIniFile;
   Index: integer;
   I, TotalCount: integer;
+  Obj: IJObject;
 
   // Networking
   FileStream: TFileStream;
@@ -1719,104 +1724,102 @@ begin
 
     // Data
     BaseFile := Directory + NewItems[I];
-    Info := TIniFile.Create(BaseFile + '.ini');
     Index := GetData(NewItems[I], DownKind);
 
     if Index = -1 then
       Exit;
 
-    // Info
-    with Info do
-      try
-        case DownKind of
-          // Tracks
-          TDataSource.Tracks: with Tracks[Index] do begin
-            WriteString(SECT_MAIN, 'Name', Title);
-            WriteString(SECT_MAIN, 'Artwork', ArtworkID);
+    // Object
+    Obj := TJObject.CreateNew;
 
-            WriteString(SECT_META, 'Album', AlbumID);
-            WriteString(SECT_META, 'Artist', ArtistID);
+    case DownKind of
+      // Tracks
+      TDataSource.Tracks: with Tracks[Index] do begin
+        Obj.Put('name', Title);
+        Obj.Put('artwork', ArtworkID);
 
-            WriteInteger(SECT_META, 'Year', Year);
-            WriteString(SECT_META, 'Genre', Genre);
-            WriteInteger(SECT_META, 'Length', LengthSeconds);
-            WriteInteger(SECT_META, 'Size', FileSize);
-            WriteInteger(SECT_META, 'Rating', Rating);
-            WriteInteger(SECT_META, 'Plays', Plays);
-            WriteString(SECT_META, 'Audio Type', AudioType);
+        Obj.Put('album', AlbumID);
+        Obj.Put('artist', ArtistID);
 
-            // Image
-            WaitForDownloadFinalise( Status );
+        Obj.Put('year', Year);
+        Obj.Put('genre', Genre);
+        Obj.Put('length', LengthSeconds);
+        Obj.Put('size', FileSize);
+        Obj.Put('rating', Rating);
+        Obj.Put('plays', Plays);
+        Obj.Put('audio-type', AudioType);
 
-            ExportFile := BaseFile + '.jpg';
-            try
-              GetArtwork.SaveToFile(ExportFile);
-            except
-              DefaultPicture.SaveToFile(ExportFile);
-            end;
-          end;
+        // Image
+        WaitForDownloadFinalise( Status );
 
-          TDataSource.Albums: with Albums[Index] do begin
-            WriteString(SECT_MAIN, 'Name', AlbumName);
-            //WriteString(SECT_MAIN, 'Artwork', ArtworkID);
-            WriteString(SECT_MAIN, 'Tracks', TracksToStr(TracksID));
-
-            WriteString(SECT_META, 'Artist', ArtistID);
-
-            WriteInteger(SECT_META, 'Year', Year);
-            WriteInteger(SECT_META, 'Rating', Rating);
-
-            // Image
-            WaitForDownloadFinalise( Status );
-
-            ExportFile := BaseFile + '.jpg';
-            try
-              GetArtwork.SaveToFile(ExportFile);
-            except
-              DefaultPicture.SaveToFile(ExportFile);
-            end;
-          end;
-
-          TDataSource.Artists: with Artists[Index] do begin
-            WriteString(SECT_MAIN, 'Name', ArtistName);
-            WriteString(SECT_MAIN, 'Artwork', ArtworkID);
-            WriteString(SECT_MAIN, 'Tracks', TracksToStr(TracksID));
-
-            WriteInteger(SECT_META, 'Rating', Rating);
-
-            // Image
-            WaitForDownloadFinalise( Status );
-
-            ExportFile := BaseFile + '.jpg';
-            try
-              GetArtwork.SaveToFile(ExportFile);
-            except
-              DefaultPicture.SaveToFile(ExportFile);
-            end;
-          end;
-
-          TDataSource.Playlists: with Playlists[Index] do begin
-            WriteString(SECT_MAIN, 'Name', Name);
-            WriteString(SECT_MAIN, 'Artwork', ArtworkID);
-            WriteString(SECT_MAIN, 'Tracks', TracksToStr(TracksID));
-
-            WriteString(SECT_META, 'Description', Description);
-
-            // Image
-            WaitForDownloadFinalise( Status );
-
-            ExportFile := BaseFile + '.jpg';
-            try
-              GetArtwork.SaveToFile(ExportFile);
-            except
-              DefaultPicture.SaveToFile(ExportFile);
-            end;
-          end;
+        ExportFile := BaseFile + '.jpg';
+        try
+          GetArtwork.SaveToFile(ExportFile);
+        except
+          DefaultPicture.SaveToFile(ExportFile);
         end;
-
-      finally
-        Free;
       end;
+
+      TDataSource.Albums: with Albums[Index] do begin
+        Obj.Put('name', AlbumName);
+        //Obj.Put('artwork', ArtworkID);
+        Obj.Put('tracks', TracksToStr(TracksID));
+
+        Obj.Put('artist', ArtistID);
+
+        Obj.Put('year', Year);
+        Obj.Put('rating', Rating);
+
+        // Image
+        WaitForDownloadFinalise( Status );
+
+        ExportFile := BaseFile + '.jpg';
+        try
+          GetArtwork.SaveToFile(ExportFile);
+        except
+          DefaultPicture.SaveToFile(ExportFile);
+        end;
+      end;
+
+      TDataSource.Artists: with Artists[Index] do begin
+        Obj.Put('name', ArtistName);
+        Obj.Put('artwork', ArtworkID);
+        Obj.Put('tracks', TracksToStr(TracksID));
+
+        Obj.Put('rating', Rating);
+
+        // Image
+        WaitForDownloadFinalise( Status );
+
+        ExportFile := BaseFile + '.jpg';
+        try
+          GetArtwork.SaveToFile(ExportFile);
+        except
+          DefaultPicture.SaveToFile(ExportFile);
+        end;
+      end;
+
+      TDataSource.Playlists: with Playlists[Index] do begin
+        Obj.Put('name', Name);
+        Obj.Put('artwork', ArtworkID);
+        Obj.Put('tracks', TracksToStr(TracksID));
+
+        Obj.Put('description', Description);
+
+        // Image
+        WaitForDownloadFinalise( Status );
+
+        ExportFile := BaseFile + '.jpg';
+        try
+          GetArtwork.SaveToFile(ExportFile);
+        except
+          DefaultPicture.SaveToFile(ExportFile);
+        end;
+      end;
+    end;
+
+    // Write
+    TJValue.SaveToFile(Obj, BaseFile + '.json');
 
     // Data
     case DownKind of
@@ -1828,7 +1831,7 @@ begin
         CurrentTrack := Tracks[Index].ID;
 
         HTTP := TIdHTTP.Create;
-        FileStream := TFileStream.Create(ExportFile, fmCreate);
+        FileStream := TFileStream.Create(ExportFile, Classes.fmCreate);
         SSLIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
         try
         try
@@ -2009,7 +2012,7 @@ begin
 
   // Create
   HTTP := TIdHTTP.Create;
-  FileStream := TFileStream.Create(FilePath, fmCreate);
+  FileStream := TFileStream.Create(FilePath, Classes.fmCreate);
   SSLIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
   try
     // Set SSL/TLS options
@@ -2156,38 +2159,43 @@ begin
     MasterList.SafeDelete(MasterList.IndexOf(Items[I]));
 end;
 
-function TDownloadManager.GetConfigFile: TIniFile;
-begin
-  Result := TIniFile.Create(AppData + 'downloads.ini');
-end;
-
 procedure TDownloadManager.LoadConfig;
+var
+  FilePath: string;
+  Obj: IJObject;
 begin
-  with GetConfigFile do
-    try
-      Tracks.LoadFromString( ReadString(CAT_DOWNLOAD, 'Tracks', ''), SEPAR);
-      Albums.LoadFromString( ReadString(CAT_DOWNLOAD, 'Albums', ''), SEPAR);
-      Artists.LoadFromString( ReadString(CAT_DOWNLOAD, 'Artists', ''), SEPAR);
-      Playlists.LoadFromString( ReadString(CAT_DOWNLOAD, 'Playlists', ''), SEPAR);
-    finally
-      Free;
-    end;
+  FilePath := DownloadsFolder + 'downloads.json';
+  if not TFile.Exists(FilePath) then
+    Exit;
+  try
+    Obj := TJValue.LoadFromFile(FilePath) as IJObject;
+  except
+    Exit;
+  end;
+
+  Tracks.LoadFromString( Obj.Memory['tracks'].AsString, SEPAR);
+  Albums.LoadFromString( Obj.Memory['albums'].AsString, SEPAR);
+  Artists.LoadFromString( Obj.Memory['artists'].AsString, SEPAR);
+  Playlists.LoadFromString( Obj.Memory['playlists'].AsString, SEPAR);
 
   // Build list
   BuildMasterList;
 end;
 
 procedure TDownloadManager.SaveConfig;
+var
+  FilePath: string;
+  Obj: IJObject;
 begin
-  with GetConfigFile do
-    try
-      WriteString(CAT_DOWNLOAD, 'Tracks', Tracks.ToString(SEPAR));
-      WriteString(CAT_DOWNLOAD, 'Albums', Albums.ToString(SEPAR));
-      WriteString(CAT_DOWNLOAD, 'Artists', Artists.ToString(SEPAR));
-      WriteString(CAT_DOWNLOAD, 'Playlists', Playlists.ToString(SEPAR));
-    finally
-      Free;
-    end;
+  FilePath := DownloadsFolder + 'downloads.json';
+
+  Obj := TJObject.CreateNew;
+  Obj.Put('tracks', Tracks.ToString(SEPAR));
+  Obj.Put('albums', Albums.ToString(SEPAR));
+  Obj.Put('artists', Artists.ToString(SEPAR));
+  Obj.Put('playlists', Playlists.ToString(SEPAR));
+
+  TJValue.SaveToFile(Obj, FilePath);
 end;
 
 procedure TDownloadManager.ValidateDownloads;
@@ -2354,6 +2362,20 @@ begin
   end;
 end;
 
+{ TDialogFetchingTokenCredentials }
+
+procedure TDialogFetchingTokenCredentials.DoPrepare;
+begin
+  TaskExec.Title.Caption:='Fetching credentials...';
+end;
+
+procedure TDialogFetchingTokenCredentials.DoWork;
+begin
+  Sleep(1000);
+
+  Succeeded := V2_Login_Token_GetFromCode(HTTP, OAuth2Code, CodeVerifier)
+end;
+
 { TDialogPlaylistUpdate }
 
 procedure TDialogPlaylistUpdate.DoPrepare;
@@ -2430,8 +2452,22 @@ end;
 { TPushHistoryThread }
 
 procedure TPushHistoryThread.DoWork;
+var
+  Index: integer;
+  TrackIDs: TArray<string>;
+  I: integer;
 begin
+  // Push to history api
   PushHistory(HTTP, Items);
+
+  // Add to recently played
+  TrackIDs := [];
+  for I := 0 to High(Items) do
+    TrackIDs := TrackIDs + [Items[I].TrackID];
+
+  Index := GetPlaylistOfType('recently-played');
+  if Index <> -1 then
+    PrependToPlaylist(V2_HTTP, Playlists[Index].ID, TrackIDs);
 end;
 
 { TDialogRestoreItem }
@@ -2544,18 +2580,28 @@ end;
 { TLoginThread }
 
 procedure TLoginThread.DoWork;
+var
+  Flags: TAPIOperationFlags;
 begin
-  if LOGIN_TOKEN <> '' then
-    LoginUser;
+  if OAuth2_AccessToken = '' then begin
+    Succeeded := false;
+    LoginServerConnectionEstablished := true;
+  end else begin
+    Succeeded := V2_Login_LoggedIn(HTTP, Flags);
+    LoginServerConnectionEstablished := not (TAPIOperationFlag.ConnectionFailed in Flags);
+  end;
+
+  if Succeeded and (TAPIOperationFlag.TokenRefreshed in Flags) then
+    Main.SaveCredentials;
 
   // Status
-  if IsAuthenthicated then
+  if Succeeded then
     LoadStatus(HTTP);
 end;
 
 procedure TLoginThread.DoFinish;
 begin
-  if IsAuthenthicated then
+  if Succeeded then
     begin
       TLoadLibraryThread.Create;
 
@@ -3276,6 +3322,11 @@ begin
   QueueUpdated(false);
 end;
 
+procedure TMain.ScrollBox2Click(Sender: TObject);
+begin
+
+end;
+
 procedure TMain.Search_BoxButtonClick(Sender: TObject);
 begin
   // Beep
@@ -3319,8 +3370,9 @@ begin
   // Save Settings
   AppSettings(false);
 
-  // Save downlaods
-  DownloadManager.SaveConfig;
+  // Save downloads
+  if not IsOffline then
+     DownloadManager.SaveConfig;
 
   // Save queue
   if Option_savequeue.Checked then
@@ -3457,13 +3509,38 @@ end;
 
 procedure TMain.MenuItem12Click(Sender: TObject);
 begin
-  BroadcastAPI.LogOff;
+  // Log Off
+  if not V2_Login_Token_Revoke(V2_HTTP) then begin
+    if MessageDLG('Logoff failed', 'The server rejected the logoff request'#13#13'Log off anyways?', mtWarning, [mbYes, mbNo], 0) <> mrYes then
+      Exit;
+  end;
+
+  // Stop audio
+  Player.Pause;
+  QueueClear;
+
   DeleteCredentials;
 end;
 
 procedure TMain.MenuItem13Click(Sender: TObject);
 begin
   SelectPage( TPage.Account );
+end;
+
+procedure TMain.Menu_PlayNextClick(Sender: TObject);
+var
+  Index: integer;
+begin
+  case PopupItem.Source of
+    TDataSource.Tracks: begin
+      QueueAdd( PopupItem.ItemID );
+
+      // Move
+      Index := Queue.Count-1;
+      if (QueueIndex > -1) and (QueueIndex+1 <> Index) then
+         QueueMove(Index, QueueIndex+1);
+    end;
+  end;
 end;
 
 procedure TMain.Music_SpeedKeyPress(Sender: TObject; var Key: char);
@@ -3479,9 +3556,25 @@ begin
     TTrackBar(Sender).Position:=100;
 end;
 
+procedure TMain.Panel3Click(Sender: TObject);
+begin
+
+end;
+
 procedure TMain.Panel7Click(Sender: TObject);
 begin
 
+end;
+
+procedure TMain.PeriodicAccessTokenRefreshTimer(Sender: TObject);
+var
+  Flags: TAPIOperationFlags;
+begin
+  if V2_Login_LoggedIn(V2_HTTP, Flags) then begin
+    // Write new creds
+    if TAPIOperationFlag.TokenRefreshed in Flags then
+      SaveCredentials;
+  end;
 end;
 
 procedure TMain.Popup_IDClick(Sender: TObject);
@@ -3786,6 +3879,9 @@ end;
 
 procedure TMain.FormCreate(Sender: TObject);
 begin
+  // Remove exceptions
+  Application.OnException := DoException;
+
   // Player
   Player := TAudioPlayer.Create;
 
@@ -3894,6 +3990,7 @@ begin
   IsQueuePage := CurrentPage = TPage.Queue;
 
   // Show
+  Menu_PlayNext.Visible:=not IsQueuePage and (PopupItem.Source = TDataSource.Tracks);
   Popup_AddQueue.Visible:=not IsQueuePage;
   Menu_Restore.Visible := PopupItem.Trashed;
   Menu_Permadelete.Visible := PopupItem.Source = TDataSource.Playlists;
@@ -3976,7 +4073,12 @@ begin
 
   // Offline
   if IsOffline then
-    LoadOfflineMode;
+    LoadOfflineMode
+  else begin
+    // If not offline AND not logged in, quit
+    if OAuth2_AccessToken = '' then
+       Exit;
+  end;
 
   // Load
   DownloadManager.LoadConfig;
@@ -4524,13 +4626,12 @@ begin
 
   // Succeeded?
   Result := LoadLib.ShowModal = mrOk;
-  if not Result then
-    begin
-      if (LoginScriptDone or ConnectedToServer) then
-        OpenLoginPage
-      else
-        IsOffline := true;
-    end;
+  if not Result then begin
+    if (LoginServerConnectionEstablished) then
+      OpenLoginPage
+    else
+      IsOffline := true;
+  end;
 
   // Page
   SelectPage(TPage.Home);
@@ -4570,54 +4671,46 @@ end;
 
 procedure TMain.SaveCredentials;
 var
+  Obj: IJObject;
   FilePath: string;
-  S: TStringList;
 begin
-  FilePath := AppData + 'credentials.cred';
+  FilePath := AppData + 'credentials.json';
 
-  S := TStringList.Create;
-  try
-    // Save
-    S.Add(APPLICATION_ID);
-    S.Add(LOGIN_TOKEN);
+  Obj := TJObject.CreateNew;
 
-    S.SaveToFile(FilePath);
-  finally
-    S.Free;
-  end;
+  Obj.Put('refresh_token', OAuth2_RefreshToken);
+  Obj.Put('access_token', OAuth2_AccessToken);
+  Obj.Put('expiry', double(OAuth2_Expiry));
+
+  TJValue.SaveToFile(Obj, FilePath, [TJValueWriteToFileFlag.FlushFileToDisk]);
 end;
 
 procedure TMain.LoadCredentials;
 var
+  Obj: IJObject;
   FilePath: string;
-  S: TStringList;
 begin
-  FilePath := AppData + 'credentials.cred';
-
+  FilePath := AppData + 'credentials.json';
   if not fileexists(FilePath) then
     Exit;
 
-  S := TStringList.Create;
   try
-    S.LoadFromFile(FilePath);
-
-    // Invalid length
-    if S.Count < 2 then
-      Exit;
-
-    // Read
-    APPLICATION_ID := S[0];
-    LOGIN_TOKEN := S[1];
-  finally
-    S.Free;
+     Obj := TJValue.LoadFromFile(FilePath) as IJObject;
+  except
+    DeleteCredentials;
+    Exit;
   end;
+
+  OAuth2_RefreshToken := Obj['refresh_token'].AsString;
+  OAuth2_AccessToken := Obj['access_token'].AsString;
+  OAuth2_Expiry := Obj['expiry'].AsFloat;
 end;
 
 procedure TMain.DeleteCredentials;
 var
   FilePath: string;
 begin
-  FilePath := AppData + 'credentials.cred';
+  FilePath := AppData + 'credentials.json';
 
   if fileexists(FilePath) then
     deletefile(FilePath);
@@ -4807,7 +4900,7 @@ begin
     Caption := Caption + ' [OFFLINE]';
 
   // Download Manager
-  with TDialogLibraryLoadThread.Create do
+  with TDialogLibraryOfflineLoadThread.Create do
     begin
       Start;
 
@@ -4834,10 +4927,9 @@ end;
 
 procedure TMain.QueueAdd(Track: string; AutoPlay: boolean);
 var
-  T: TStringArray;
+  T: TArray<string>;
 begin
-  T := [];
-  T[0] := Track;
+  T := [Track];
 
   QueueAdd(T, AutoPlay);
 end;
@@ -5350,7 +5442,7 @@ begin
                   // Text
                   ARect := Rect(X, Y, AWidth, Y+LabelHeight);
 
-                  TPaintBox(Sender).Canvas.TextRect(ARect, ARect.Left, 0, Text, Style);
+                  TPaintBox(Sender).Canvas.TextRect(ARect, ARect.Left, ARect.Top, Text);
                 end;
 
               // Next
@@ -6775,6 +6867,11 @@ begin
   TThread.Synchronize(TThread.CurrentThread, Main.CurrentViewReload);
 end;
 
+procedure TMain.DoException(Sender: TObject; E: Exception);
+begin
+  //AddToLog('[EXCEPTION] '+E.ClassName+': '+E.Message);
+end;
+
 procedure TMain.PlayerUpdate;
 begin
   Music_Play.Enabled := Player.IsFileOpen;
@@ -6795,5 +6892,11 @@ begin
   Player.Speed:=PlayerSpeed;
 end;
 
-end.
 
+initialization
+  // Version
+  VersionChecker := TStandardVersionCheckerUpdateUrl.Create('ibroadcast', APP_VERSION, 'https://api.codrutsoft.com/');
+
+finalization
+  VersionChecker.Free;
+end.

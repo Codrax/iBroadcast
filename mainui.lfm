@@ -1347,6 +1347,7 @@ object Main: TMain
             ClientWidth = 816
             ParentBackground = False
             TabOrder = 0
+            OnClick = ScrollBox2Click
             object Label20: TLabel
               Left = 8
               Height = 21
@@ -1664,6 +1665,7 @@ object Main: TMain
       FullRepaint = False
       ParentBackground = False
       TabOrder = 6
+      OnClick = Panel3Click
       object Label1: TLabel
         Left = 16
         Height = 32
@@ -4585,6 +4587,10 @@ object Main: TMain
     OnPopup = Generic_MenuPopup
     Left = 928
     Top = 80
+    object Menu_PlayNext: TMenuItem
+      Caption = 'Play next'
+      OnClick = Menu_PlayNextClick
+    end
     object Popup_AddQueue: TMenuItem
       Caption = 'Add to queue'
       OnClick = Popup_AddQueueClick
@@ -8678,5 +8684,10 @@ object Main: TMain
     Interval = 1
     OnTimer = Debugger32Timer
     Left = 608
+  end
+  object PeriodicAccessTokenRefresh: TTimer
+    Interval = 360000
+    OnTimer = PeriodicAccessTokenRefreshTimer
+    Left = 496
   end
 end

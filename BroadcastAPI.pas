@@ -14,8 +14,8 @@ uses
   SysUtils, Classes, Graphics, Generics.Collections,
   IdHTTP, IdGlobal, IdSSLOpenSSL, IdURI, DateUtils, Forms,
   {$IFDEF FPC}fpjson, {$ELSE}Imaging.jpeg,{$ENDIF}
-  Cod.Types, Cod.Helpers, Cod.Helpers.Vcl, Cod.SysUtils, Cod.Files,
-  Cod.ArrayHelpers, Cod.JSON, Cod.JSON.Utils, Cod.Version, UnitInfo
+  Cod.Types, Cod.Files, Cod.ArrayHelpers, Cod.JSON, Cod.JSON.Utils,
+  Cod.Version, UnitInfo
   {$IFDEF FPC}, Cod.Platform.Lazarus{$ELSE}, IOUtils{$ENDIF};
 
 type
@@ -31,6 +31,10 @@ type
   // Loading
   TLoad = (Track, Album, Artist, PlayList);
   TLoadSet = set of TLoad;
+
+  // Flags
+  TAPIOperationFlag = (ConnectionFailed, TokenRefreshed);
+  TAPIOperationFlags = set of TAPIOperationFlag;
 
 const
   LOAD_SET_ALL = [Low(TLoad)..High(TLoad)];
@@ -66,17 +70,6 @@ type
   end;
 
   // Records
-  ResultType = record
-    Error: boolean;
-    LoggedIn: boolean;
-    ServerMessage: string;
-
-    function Success: boolean;
-
-    procedure TerminateSession;
-    procedure AnaliseFrom(JSON: TJSONObject);
-  end;
-
   TTrackHistoryItem = record
     TrackID: string;
     TimeStamp: TDateTime;
@@ -91,7 +84,7 @@ type
     UpdateTimestamp: TDateTime;
 
     (* Loading *)
-    procedure LoadFrom(JSON: TJSONObject);
+    procedure LoadFrom(AObj: IJObject);
   end;
 
   TAccount = record
@@ -110,7 +103,7 @@ type
     VerificationDate: TDateTime;
 
     (* Loading *)
-    procedure LoadFrom(JSON: TJSONObject);
+    procedure LoadFrom(AObj: IJObject);
   end;
 
   { TTrackItem }
@@ -162,7 +155,7 @@ type
     function GetArtwork(Large: boolean = false): TJPEGImage;
 
     (* Loading *)
-    procedure LoadFrom(JSONPair: TJSONData; AName: string);
+    procedure LoadFrom(Key: string; AArr: IJArray);
   end;
 
   TAlbumItem = record
@@ -191,7 +184,7 @@ type
     function GetArtwork: TJPEGImage;
 
     (* Loading *)
-    procedure LoadFrom(JSONPair: TJSONData; AName: string);
+    procedure LoadFrom(Key: string; AArr: IJArray);
   end;
 
   { TArtistItem }
@@ -221,7 +214,7 @@ type
     function GetArtwork(Large: boolean = false): TJPEGImage;
 
     (* Loading *)
-    procedure LoadFrom(JSONPair: TJSONData; AName: string);
+    procedure LoadFrom(Key: string; AArr: IJArray);
   end;
 
   { TPlaylistItem }
@@ -254,7 +247,7 @@ type
     function GetArtwork(Large: boolean = false): TJPEGImage;
 
     (* Loading *)
-    procedure LoadFrom(JSONPair: TJSONData; AName: string);
+    procedure LoadFrom(Key: string; AArr: IJArray);
   end;
 
   { TGenreItem }
@@ -303,18 +296,6 @@ function StringToTime(const ADateTimeStr: string; CovertUTC: boolean = true): TT
 function DateTimeToString(ADateTime: TDateTime; CovertUTC: boolean = true): string;
 function DateToString(ADateTime: TDate; CovertUTC: boolean = true): string;
 function Yearify(Year: cardinal): string;
-
-// Main Request
-function SendClientRequest(RequestJSON: string; Endpoint: string = ''): TJSONObject;
-
-// API
-function ConnectedToServer: boolean;
-
-// User
-function LoginUser: boolean;
-procedure LogOff;
-
-function IsAuthenthicated: boolean;
 
 // Memory
 procedure APIFreeMemory;
@@ -405,7 +386,7 @@ function V2_Login_Token_Refresh(const HTTP: TIdHTTP): boolean;
 function V2_Login_Token_Revoke(const HTTP: TIdHTTP): boolean;
 
 // Login - processer & modifier
-function V2_Login_LoggedIn(const HTTP: TIdHTTP; out Succeeded: boolean): boolean;
+function V2_Login_LoggedIn(const HTTP: TIdHTTP; out Flags: TAPIOperationFlags): boolean;
 
 const
   // Formattable Strings
@@ -415,7 +396,7 @@ const
 
   // App
   APP_NAME = 'Cod''s iBroadcast';
-  APP_VERSION: TVersion = (Major:APP_VERSION_MAJOR; Minor:APP_VERSION_MINOR; Maintenance: APP_VERSION_MAINTENANCE);
+  APP_VERSION: TVersion = (Major:APP_VERSION_MAJOR; Minor:APP_VERSION_MINOR; Maintenance: APP_VERSION_MAINTENANCE; Build: 0);
 
   APP_USERMODELID = 'com.codrutsoft.ibroadcast';
   APP_IDENTIFIER = APP_USERMODELID;
@@ -438,119 +419,6 @@ const
 
   // Artwork Store
   ART_EXT = '.jpeg';
-
-  // Templates
-  API_VERSION = '1.0.0.0';
-  REQUEST_HEADER = '{'
-    + '"user_id": "%U",'
-    + '"token": "%S",'
-    + '"version": "' + API_VERSION + '"';
-
-  // Request Formats
-  REQUEST_LOGIN = '{'
-    + '"login_token": "%S",'
-    + '"device_name": "%S",'
-    + '"client": "%S",'
-    + '"version": "' + API_VERSION + '",'
-    + '"app_id": "%S",'
-    + '"type": "account",'
-    + '"mode": "login_token"'
-    + '}';
-
-  REQUEST_LOGOFF = REQUEST_HEADER + ','
-    + '"mode": "logout"'
-    + '}';
-
-  // Data
-  REQUEST_EMPTY = REQUEST_HEADER + ','
-    + '}';
-
-  REQUEST_DATA = REQUEST_HEADER + ','
-    + '"mode": "%S"'
-    + '}';
-
-  // Playlist
-  REQUEST_LIST_TEMPLATE = REQUEST_HEADER + ','
-    + '"mode": "createplaylist",'
-    + '"name": "%S",'
-    + '"description": "%S",'
-    + '"make_public": %S';
-
-  REQUEST_LIST_CREATETRACKS = REQUEST_LIST_TEMPLATE + ','
-    + '"tracks": [%S]'
-    + '}';
-
-  REQUEST_LIST_CREATEMOOD = REQUEST_LIST_TEMPLATE + ','
-    + '"mood": "%S"'
-    + '}';
-
-  REQUEST_LIST_DELETE = REQUEST_HEADER + ','
-    + '"mode": "deleteplaylist",'
-    + '"playlist": %S'
-    + '}';
-
-  REQUEST_LIST_ADD = REQUEST_HEADER + ','
-    + '"mode": "appendplaylist",'
-    + '"playlist": %S,'
-    + '"tracks": [%S]'
-    + '}';
-
-  REQUEST_LIST_SET = REQUEST_HEADER + ','
-    + '"mode": "updateplaylist",'
-    + '"playlist": %S,'
-    + '"tracks": [%S]'
-    + '}';
-
-  REQUEST_LIST_UPDATE = REQUEST_HEADER + ','
-    + '"mode": "updateplaylist",'
-    + '"playlist": %S,'
-    + '"name": "%S",'
-    + '"supported_types": false,'
-    + '"description": "%S"'
-    + '}';
-
-  // Track
-  REQUEST_TRACK_DELETE = REQUEST_HEADER + ','
-    + '"mode": "trash",'
-    + '"tracks": [%S]'
-    + '}';
-
-  REQUEST_TRACK_RESTORE = REQUEST_HEADER + ','
-    + '"mode": "restore",'
-    + '"tracks": [%S]'
-    + '}';
-
-  REQUEST_TRACK_EMPTYTRASH = REQUEST_HEADER + ','
-    + '"mode": "empty_trash",'
-    + '"tracks": [%S]'
-    + '}';
-
-  // Rating
-  REQUEST_RATE_TRACK = REQUEST_HEADER + ','
-    + '"mode": "ratetrack",'
-    + '"track_id": %S,'
-    + '"rating": %D'
-    + '}';
-
-  REQUEST_RATE_ALBUM = REQUEST_HEADER + ','
-    + '"mode": "ratealbum",'
-    + '"album_id": %S,'
-    + '"rating": %D'
-    + '}';
-
-  REQUEST_RATE_ARTIST = REQUEST_HEADER + ','
-    + '"mode": "rateartist",'
-    + '"artist_id": %S,'
-    + '"rating": %D'
-    + '}';
-
-  // History
-  (* Will be build on runtime *)
-
-  // Library
-  REQUEST_LIBRARY = REQUEST_HEADER
-    + '}';
-
 
 var
   // App Device token
@@ -589,11 +457,6 @@ var
   // Artwork Store
   ArtworkStore: boolean = true;
   MediaStoreLocation: string;
-
-  // Server Login Output
-  TOKEN: string;
-  USER_ID: integer;
-  APPLICATION_ID: string = '1102';
 
   // Library
   LibraryStatus: TLibraryStatus;
@@ -854,19 +717,24 @@ begin
   OAuth2_Expiry := 0;
 end;
 
-function V2_Login_LoggedIn(const HTTP: TIdHTTP; out Succeeded: boolean): boolean;
+function V2_Login_LoggedIn(const HTTP: TIdHTTP; out Flags: TAPIOperationFlags): boolean;
 var
   Response: IJValue;
   Body: IJObject;
   Obj: IJObject;
+
+  Succeeded: boolean;
 begin
   Result := false;
+  Flags := [];
 
   Body := V2_GetBody;
   Body.Put('mode', 'status');
 
   Response := V2_RequestPost(HTTP, Body, ENDPOINT_API, OAuth2_AccessToken);
   Succeeded := Response <> nil;
+  if not Succeeded then
+    Flags := Flags + [TAPIOperationFlag.ConnectionFailed];
   if (Response = nil) or not Response.IsObject then
     Exit;
   Obj := Response.AsObject;
@@ -879,6 +747,8 @@ begin
     if (Succeeded and not Result)
       or (IncMinute(Now, 30) >= OAuth2_Expiry) then begin
       Result := V2_Login_Token_Refresh(HTTP);
+
+      Flags := Flags + [TAPIOperationFlag.TokenRefreshed];
     end;
 
   // Clear login on server confirmation
@@ -886,132 +756,6 @@ begin
     OAuth2_RefreshToken := '';
     OAuth2_AccessToken := '';
     OAuth2_Expiry := 0;
-  end;
-end;
-
-function SendClientRequest(RequestJSON: string; Endpoint: string = ''): TJSONObject;
-var
-  Response: string;
-  HTTP: TIdHTTP;
-  SSLIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  RequestStream: TStringStream;
-begin
-  // Endpoint
-  if Endpoint = '' then
-    Endpoint := ENDPOINT_API;
-
-  // Create HTTP and SSLIOHandler components
-  HTTP := TIdHTTP.Create(nil);
-  SSLIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
-  RequestStream := TStringStream.Create(RequestJSON);
-  try
-    // Set SSL/TLS options
-    SSLIOHandler.SSLOptions.SSLVersions := [sslvTLSv1_2];
-    HTTP.IOHandler := SSLIOHandler;
-
-    // Set headers
-    HTTP.Request.ContentType := 'application/json';
-
-    // Send request and receive response
-    Response := HTTP.Post(Endpoint, RequestStream);
-
-    // Parse response and extract numbers
-    Result := GetJSON(Response) as TJSONObject;
-  finally
-    // Free
-    HTTP.Free;
-    RequestStream.Free;
-  end;
-end;
-
-function LoginUser: boolean;
-var
-  Request: string;
-  SResult: ResultType;
-
-  JSONValue: TJSONObject;
-  JSONUser: TJSONObject;
-begin
-  // Reset values
-  USER_ID := 0;
-  TOKEN := '';
-
-  // Prepare request string
-  Request := Format(REQUEST_LOGIN, [LOGIN_TOKEN, DEVICE_NAME, APP_IDENTIFIER, APPLICATION_ID]);
-
-  // Parse response and extract numbers
-  JSONValue := SendClientRequest(Request);
-  try
-    SResult.AnaliseFrom(JSONValue);
-
-    Result := SResult.Success;
-
-    // Success
-    if SResult.Success then
-        begin
-          // Get "user" category
-          JSONUser := JSONValue.Get('user', TJSONObject(nil));
-
-          // Get User ID
-          USER_ID := StrToInt( JSONUser.Get('id', '') );
-          TOKEN := JSONUser.Get('token', '');
-        end
-      else
-        begin
-          //raise Exception.Create(SResult.ServerMessage);
-        end;
-
-  finally
-    JSONValue.Free;
-  end;
-end;
-
-procedure LogOff;
-var
-  Request: string;
-  SResult: ResultType;
-
-  JSONValue: TJSONObject;
-begin
-  // Prepare request string
-  Request := Format(REQUEST_LOGOFF, [USER_ID, TOKEN]);
-
-  // Parse response and extract numbers
-  JSONValue := SendClientRequest(Request);
-  try
-    SResult.AnaliseFrom(JSONValue);
-  finally
-    JSONValue.Free;
-  end;
-
-  // Reset array
-  SetLength(Tracks, 0);
-  SetLength(Albums, 0);
-  SetLength(Artists, 0);
-  SetLength(Playlists, 0);
-end;
-
-function IsAuthenthicated: boolean;
-var
-  Request: string;
-  SResult: ResultType;
-
-  JSONValue: TJSONObject;
-begin
-  if (USER_ID = 0) or (TOKEN = '') then
-    Exit(false);
-
-  // Prepare request string
-  Request := Format(REQUEST_DATA, [USER_ID, TOKEN, 'status']);
-
-  // Parse response and extract numbers
-  JSONValue := SendClientRequest(Request);
-  try
-    SResult.AnaliseFrom(JSONValue);
-
-    Result := SResult.LoggedIn;
-  finally
-    JSONValue.Free;
   end;
 end;
 
@@ -1204,7 +948,7 @@ begin
     end;
 end;
 
-function UpdateAlbumRating(const HTTP: TIdHTTP; ID: string; Rating: integer; ReloadLibrary: boolean): boolean;    
+function UpdateAlbumRating(const HTTP: TIdHTTP; ID: string; Rating: integer; ReloadLibrary: boolean): boolean;
 var
   Body: IJObject;
   Response: IJValue;
@@ -1229,7 +973,7 @@ begin
     LoadLibrary(HTTP, [TLoad.Album]);
 end;
 
-function UpdateArtistRating(const HTTP: TIdHTTP; ID: string; Rating: integer; ReloadLibrary: boolean): boolean;  
+function UpdateArtistRating(const HTTP: TIdHTTP; ID: string; Rating: integer; ReloadLibrary: boolean): boolean;
 var
   Body: IJObject;
   Response: IJValue;
@@ -1266,7 +1010,7 @@ begin
   Body := V2_GetBody;
   Body.Put('mode', 'createplaylist');
   Body.Put('name', Name);
-  Body.Put('description', Name);
+  Body.Put('description', Description);
   Body.Put('make_public', MakePublic);
   Body.Put('tracks', ArrayToJArray(Tracks));
 
@@ -1630,227 +1374,207 @@ end;
 
 function LoadStatus(const HTTP: TIdHTTP): boolean;
 var
-  Request: string;
-  JResult: ResultType;
-
-  JSONValue: TJSONObject;
-  JSONAccount,
-  JSONItem: TJSONObject;
-  JSONSessions: TJSONArray;
-  I: Integer;
+  Body: IJObject;
+  Response: IJValue;
+  Obj: IJObject;
 begin
-  // Prepare request string
-  Request := Format(REQUEST_DATA, [USER_ID, TOKEN, 'status']);
-
-  // Parse response and extract numbers
+  Result := false;
   SetWorkStatus('Contacting iBroadcast API servers...');
-  JSONValue := SendClientRequest(Request);
-  try
-    // Error
-    JResult.AnaliseFrom(JSONVALUE);
+  //
+  Body := V2_GetBody;
+  Body.Put('mode', 'status');
 
-    if JResult.Error then
-      if not JResult.LoggedIn then
-        JResult.TerminateSession;
+  Response := V2_RequestPost(HTTP, Body, ENDPOINT_API, OAuth2_AccessToken);
+  if (Response = nil) or not Response.IsObject then
+    Exit;
+  Obj := Response.AsObject;
+  Result := Obj.KeyExists('result') and Obj.Memory['result'].AsBoolean;
 
-    // Load status
-    SetWorkStatus('Loading library status...');
-    JSONItem := JSONValue.Get('status', TJSONObject(nil));
-    LibraryStatus.LoadFrom(JSONItem);
+  // Load status
+  SetWorkStatus('Loading library status...');
+  if Obj.KeyExists('status') and Obj['status'].IsObject then
+    LibraryStatus.LoadFrom(Obj.Memory['status'].AsObject);
 
-    // Account
-    SetWorkStatus('Loading your account...');
-    JSONAccount := JSONValue.Get('user', TJSONObject(nil));
-
-    Account.LoadFrom( JSONAccount );
-  finally
-    JSONValue.Free;
-  end;
+  // Account
+  SetWorkStatus('Loading your account...');
+  if Obj.KeyExists('user') and Obj['user'].IsObject then
+    Account.LoadFrom(Obj.Memory['user'].AsObject);
 end;
 
 function LoadLibrary(const HTTP: TIdHTTP; LoadSet: TLoadSet): boolean;
 var
-  Request: string;
-  JResult: ResultType;
+  Body: IJObject;
+  Response: IJValue;
+  Obj: IJObject;
 
-  JSONValue: TJSONObject;
-  JSONLibrary,
-  JSONItem: TJSONObject;
-  JSONData: TJSONData;
-  I, Index: Integer;
-  Name: string;
+  ObjLibrary, ObjLibItem: IJObject;
+
+  I: integer;
+  Key: string;
+  Item: IJValue;
+
+  Index: integer;
 begin
-  // Prepare request string
-  Request := Format(REQUEST_LIBRARY, [USER_ID, TOKEN]);
+  Result := false;
+  SetWorkStatus('Downloading iBroadcast Library...');
+  //
+  Body := V2_GetBody;
+
+  Response := V2_RequestPost(HTTP, Body, ENDPOINT_API_LIBRARY, OAuth2_AccessToken);
+  if (Response = nil) or not Response.IsObject then
+    Exit;
+  Obj := Response.AsObject;
+  Result := Obj.KeyExists('result') and Obj.Memory['result'].AsBoolean;
 
   // Work
   ResetWork;
 
-  // Parse response and extract numbers
-  SetWorkStatus('Downloading iBroadcast Library...');
-  JSONValue := SendClientRequest(Request, ENDPOINT_API_LIBRARY);
-  try
-    // Error
-    JResult.AnaliseFrom(JSONVALUE);
+  // Load library
+  SetWorkStatus('Loading library...');
 
-    if JResult.Error then
-      if not JResult.LoggedIn then
-        JResult.TerminateSession;
+  if not Obj.KeyExists('library') then
+    Exit;
+  ObjLibrary := Obj.Memory['library'].AsObject;
 
-    // Load library
-    SetWorkStatus('Loading library...');
-    JSONLibrary := JSONValue.Get('library', TJSONObject(nil));
+  // Tracks
+  if (TLoad.Track in LoadSet) and ObjLibrary.KeyExists('tracks') then begin
+    SetWorkStatus('Loading tracks...');
+    ResetWork;
+    ObjLibItem := ObjLibrary.Memory['tracks'].AsObject;
+    TotalWorkCount := ObjLibItem.AsObject.Count;
 
-    // Tracks
-    if TLoad.Track in LoadSet then
-      begin
-        SetWorkStatus('Loading tracks...');
-        JSONItem := JSONLibrary.Get('tracks', TJSONObject(nil));
-        SetLength( Tracks, 0 );
+    // Enumerate
+    Tracks := [];
+    for I := 0 to ObjLibItem.Count-1 do begin
+      Inc(WorkCount);
 
-        // Work
-        ResetWork;
-        TotalWorkCount := JSONItem.Count;
+      Key := ObjLibItem.GetItemKey(I);
+      Item := ObjLibItem.GetMemory(I);
 
-        for I := 0 to JSONItem.Count - 1 do
-          begin
-            try
-              Name := JSONItem.Names[I];
-              JSONData := JSONItem.Items[I];
-            except
-              if I >= JSONItem.Count - 1 then
-                Break;
-              Continue;
-            end;
+      // Skip
+      if (Key = 'map') or not Item.IsArray then
+        continue;
 
-            WorkCount := I;
+      // Add
+      Index := Length(Tracks);
+      SetLength( Tracks, Index + 1 );
 
-            if JSONData.JSONType = jtObject then
-              Continue;
+      Tracks[Index].LoadFrom(Key, Item.AsArray);
+    end;
 
-            Index := Length(Tracks);
-            SetLength( Tracks, Index + 1 );
-
-            Tracks[Index].LoadFrom( JSONData, Name );
-          end;
-
-        // Updated
-        if Assigned(OnUpdateType) then
-          OnUpdateType(TDataSource.Tracks);
-      end;
-
-    // Genres
-    if TLoad.Track in LoadSet then
-      LoadLibraryGenres;
-
-    // Albums
-    if TLoad.Album in LoadSet then
-      begin
-        SetWorkStatus('Loading albums...');
-        JSONItem := JSONLibrary.Get('albums', TJSONObject(nil));
-        SetLength( Albums, 0 );
-
-        // Work
-        ResetWork;
-        TotalWorkCount := JSONItem.Count;
-
-        for I := 0 to JSONItem.Count - 1 do
-          begin
-            Name := JSONItem.Names[I];
-            JSONData := JSONItem.Items[I];
-
-            WorkCount := I;
-
-            if JSONData.JSONType = jtObject then
-              Continue;
-
-            Index := Length(Albums);
-            SetLength( Albums, Index + 1 );
-
-            Albums[Index].LoadFrom( JSONData, Name );
-
-            // Invalid entry, delete from index
-            if Length(Albums[Index].TracksID) = 0 then
-              SetLength( Albums, Index );
-          end;
-
-        // Updated
-        if Assigned(OnUpdateType) then
-          OnUpdateType(TDataSource.Albums);
-      end;
-
-    // Artists
-    if TLoad.Artist in LoadSet then
-      begin
-        SetWorkStatus('Loading artists...');
-        JSONItem := JSONLibrary.Get('artists', TJSONObject(nil));
-        SetLength( Artists, 0 );
-
-        // Work
-        ResetWork;
-        TotalWorkCount := JSONItem.Count;
-
-        for I := 0 to JSONItem.Count - 1 do
-          begin
-            Name := JSONItem.Names[I];
-            JSONData := JSONItem.Items[I];
-
-            WorkCount := I;
-
-            if JSONData.JSONType = jtObject then
-              Continue;
-
-            Index := Length(Artists);
-            SetLength( Artists, Index + 1 );
-
-            Artists[Index].LoadFrom( JSONData, Name );
-
-            // Invalid entry, delete from index
-            if Length(Artists[Index].TracksID) = 0 then
-              SetLength( Artists, Index );
-          end;
-
-        // Updated
-        if Assigned(OnUpdateType) then
-          OnUpdateType(TDataSource.Artists);
-      end;
-
-    // PlayLists
-    if TLoad.PlayList in LoadSet then
-      begin
-        SetWorkStatus('Loading playlists...');
-        JSONItem := JSONLibrary.Get('playlists', TJSONObject(nil));
-        SetLength( PlayLists, 0 );
-
-        // Work
-        ResetWork;
-        TotalWorkCount := JSONItem.Count;
-
-        for I := 0 to JSONItem.Count - 1 do
-          begin
-            Name := JSONItem.Names[I];
-            JSONData := JSONItem.Items[I];
-
-            WorkCount := I;
-
-            if JSONData.JSONType = jtObject then
-              Continue;
-
-            Index := Length(PlayLists);
-            SetLength( PlayLists, Index + 1 );
-
-            PlayLists[Index].LoadFrom( JSONData, Name );
-          end;
-
-        // Updated
-        if Assigned(OnUpdateType) then
-          OnUpdateType(TDataSource.Playlists);
-      end;
-  finally
-    JSONValue.Free;
+    // Updated
+    if Assigned(OnUpdateType) then
+      OnUpdateType(TDataSource.Tracks);
   end;
 
-  // Work
+  // Albums
+  if TLoad.Album in LoadSet then begin
+    SetWorkStatus('Loading albums...');
+    ResetWork;
+    ObjLibItem := ObjLibrary.Memory['albums'].AsObject;
+    TotalWorkCount := ObjLibItem.AsObject.Count;
+
+    // Enumerate
+    Albums := [];
+    for I := 0 to ObjLibItem.Count-1 do begin
+      Inc(WorkCount);
+
+      Key := ObjLibItem.GetItemKey(I);
+      Item := ObjLibItem.GetMemory(I);
+
+      // Skip
+      if (Key = 'map') or not Item.IsArray then
+        continue;
+
+      // Add
+      Index := Length(Albums);
+      SetLength( Albums, Index + 1 );
+
+      Albums[Index].LoadFrom(Key, Item.AsArray);
+
+      // Invalid entry, delete from index
+      if Length(Albums[Index].TracksID) = 0 then
+        SetLength(Albums, Index);
+    end;
+
+    // Updated
+    if Assigned(OnUpdateType) then
+      OnUpdateType(TDataSource.Albums);
+  end;
+
+  // Artists
+  if TLoad.Artist in LoadSet then begin
+    SetWorkStatus('Loading artists...');
+    ResetWork;
+    ObjLibItem := ObjLibrary.Memory['artists'].AsObject;
+    TotalWorkCount := ObjLibItem.AsObject.Count;
+
+    // Enumerate
+    Artists := [];
+    for I := 0 to ObjLibItem.Count-1 do begin
+      Inc(WorkCount);
+
+      Key := ObjLibItem.GetItemKey(I);
+      Item := ObjLibItem.GetMemory(I);
+
+      // Skip
+      if (Key = 'map') or not Item.IsArray then
+        continue;
+
+      // Add
+      Index := Length(Artists);
+      SetLength( Artists, Index + 1 );
+
+      Artists[Index].LoadFrom(Key, Item.AsArray);
+
+      // Invalid entry, delete from index
+      if Length(Artists[Index].TracksID) = 0 then
+        SetLength(Artists, Index);
+    end;
+
+    // Updated
+    if Assigned(OnUpdateType) then
+      OnUpdateType(TDataSource.Artists);
+  end;
+
+  // PlayLists
+  if TLoad.PlayList in LoadSet then begin
+    SetWorkStatus('Loading playlists...');
+    ResetWork;
+    ObjLibItem := ObjLibrary.Memory['playlists'].AsObject;
+    TotalWorkCount := ObjLibItem.AsObject.Count;
+
+    // Enumerate
+    Playlists := [];
+    for I := 0 to ObjLibItem.Count-1 do begin
+      Inc(WorkCount);
+
+      Key := ObjLibItem.GetItemKey(I);
+      Item := ObjLibItem.GetMemory(I);
+
+      // Skip
+      if (Key = 'map') or not Item.IsArray then
+        continue;
+
+      // Add
+      Index := Length(PlayLists);
+      SetLength( PlayLists, Index + 1 );
+
+      PlayLists[Index].LoadFrom(Key, Item.AsArray);
+    end;
+
+    // Updated
+    if Assigned(OnUpdateType) then
+      OnUpdateType(TDataSource.Playlists);
+  end;
+
+  // Genres
+  {$IFDEF GENRES}
+  if TLoad.Track in LoadSet then
+     LoadLibraryGenres;
+  {$ENDIF}
+
+  //
   ResetWork;
 end;
 
@@ -2119,38 +1843,6 @@ begin
   Result := TempResult;
 end;
 
-{ ResultType }
-
-procedure ResultType.AnaliseFrom(JSON: TJSONObject);
-var
-  O:  TJSONString;
-begin
-  Error := not JSON.Get('result', false);
-
-  LoggedIn := JSON.Get('authenticated', false);
-
-  if JSON.Find('message', O) then
-    try
-      if O.JSONType = jtString then
-        ServerMessage := O.AsString;
-    except
-      ServerMessage := '';
-    end;
-end;
-
-function ResultType.Success: boolean;
-begin
-  Result := not Error;
-end;
-
-procedure ResultType.TerminateSession;
-begin
-  LogOff;
-
-  // Terminate Parent Function
-  Abort;
-end;
-
 function GetTrack(ID: string): integer;
 var
   I: Integer;
@@ -2334,49 +2026,34 @@ begin
     Result := IntToStrIncludePrefixZeros( Year, 4 );
 end;
 
-function ConnectedToServer: boolean;
-var
-  Request: string;
-begin
-  // Prepare request string
-  Request := '{"mode": "test"}';
-
-  // Parse response and extract numbers
-  try
-    SendClientRequest(Request);
-
-    Result := true;
-  except
-    Result := false;
-  end;
-end;
-
 { TLibraryStatus }
 
-procedure TLibraryStatus.LoadFrom(JSON: TJSONObject);
+procedure TLibraryStatus.LoadFrom(AObj: IJObject);
 begin
-  TotalTracks := JSON.Get('available', 0);
-  TotalPlays := JSON.Get('plays', 0);
+  TotalTracks := AObj.Memory['available'].AsInteger;
+  TotalPlays := AObj.Memory['plays'].AsInteger;
 
-  try
-    TokenExpireDate := StringToDateTime( JSON.Get('expires', '') );
-    LastLibraryModified := StringToDateTime( JSON.Get('lastmodified', '') );
-    UpdateTimestamp := StringToDateTime( JSON.Get('timestamp', '') );
-  except
-  end;
+  TokenExpireDate := StringToDateTime(AObj.Memory['expires'].AsString);
+  LastLibraryModified := StringToDateTime(AObj.Memory['lastmodified'].AsString);
+  UpdateTimestamp := StringToDateTime(AObj.Memory['timestamp'].AsString);
 end;
 
 { TTrackItem }
-
 function TTrackItem.GetStreamingURL: string;
 begin
-  // Format URI
-  Result := ENDPOINT_STREAMING + StreamLocations+
-    Format('?Signature=%S&file_id=%S&user_id=%U&platform=%S&version=%S',
-    [TOKEN, ID, USER_ID, APP_IDENTIFIER, APP_VERSION.ToString]);
+  Result := ENDPOINT_STREAMING+StreamLocations
+    +Format('?Signature=%S&file_id=%S&user_id=%S&platform=%S&version=%S',
+    [OAuth2_AccessToken, ID, Account.UserID, APP_IDENTIFIER, APP_VERSION.ToString]);
+  (*
+    Signature - user token - string
+    file_id - song ID - integer
+    user_id = user ID - integer
+    platform - app name - string
+    version - this app version - string
+  *)
 
-  // Encode URI
-  Result := TIdURI.URLEncode(Result);
+  // Encode result
+  Result := TIdUrI.URLEncode(Result);
 end;
 
 function TTrackItem.ArtworkLoaded(Large: boolean): boolean;
@@ -2424,46 +2101,43 @@ begin
   Status := Status - [TWorkItem.DownloadingImage];
 end;
 
-procedure TTrackItem.LoadFrom(JSONPair: TJSONData; AName: string);
-var
-  JSON: TJSONArray;
+
+
+procedure TTrackItem.LoadFrom(Key: string; AArr: IJArray);
 begin
-  JSON := JSONPair as TJSONArray;
-
-  // Data
-  ID := AName;
-
+  ID := Key;
   SetDataWorkStatus(Format('Loading song with ID of %S', [ID]));
+  //
 
-  TrackNumber := (JSON.Items[0].AsInteger);
-  Year := (JSON.Items[1].AsInteger);
+  TrackNumber := AArr.Memory[0].AsInteger;
+  Year := AArr.Memory[1].AsInteger;
 
-  Title := (JSON.Items[2].AsString);
-  Genre := (JSON.Items[3].AsString);
+  Title := AArr.Memory[2].AsString;
+  Genre := AArr.Memory[3].AsString;
 
-  LengthSeconds := (JSON.Items[4].AsInteger);
+  LengthSeconds := AArr.Memory[4].AsInteger;
   // Typecast as number, then as string for legacy accounts
-  AlbumID := JSON.Items[5].AsString;
-  ArtworkID := JSON.Items[6].AsString;
-  ArtistID := JSON.Items[7].AsString;
+  AlbumID := AArr.Memory[5].AsString;
+  ArtworkID := AArr.Memory[6].AsString;
+  ArtistID := AArr.Memory[7].AsString;
 
   // ?
-  DayUploaded := StringToDateTime( JSON.Items[9].AsString );
-  IsInTrash := (JSON.Items[10].AsBoolean);
-  FileSize := (JSON.Items[11].AsInteger);
+  DayUploaded := StringToDateTime( AArr.Memory[9].AsString );
+  IsInTrash := AArr.Memory[10].AsBoolean;
+  FileSize := AArr.Memory[11].AsInteger;
 
-  UploadLocation := (JSON.Items[12].AsString);
+  UploadLocation := AArr.Memory[12].AsString;
   // ?
 
-  Rating := (JSON.Items[14].AsInteger);
-  Plays := (JSON.Items[15].AsInteger);
+  Rating := AArr.Memory[14].AsInteger;
+  Plays := AArr.Memory[15].AsInteger;
 
-  StreamLocations := (JSON.Items[16].AsString);
-  AudioType := (JSON.Items[17].AsString);
+  StreamLocations := AArr.Memory[16].AsString;
+  AudioType := AArr.Memory[17].AsString;
 
-  ReplayGain := (JSON.Items[18].AsString);
+  ReplayGain := AArr.Memory[18].AsString;
   try
-    UploadTime := StringToTime( (JSON.Items[19].AsString) );
+    UploadTime := StringToDateTime( AArr.Memory[19].AsString );
   except
     UploadTime := 0;
   end;
@@ -2472,48 +2146,40 @@ end;
 
 { TAccount }
 
-procedure TAccount.LoadFrom(JSON: TJSONObject);
+procedure TAccount.LoadFrom(AObj: IJObject);
 const
-  BACKUP_DATE = '2023-03-05';
+  BACKUP_DATE = 44990.0833333333; // 2023-03-05
 var
-  S: string;
-  O: TJSONString;
-  OB: TJSONBoolean;
+  Obj: IJObject;
 begin
   SetDataWorkStatus('Loading account from post request');
 
-  if JSON.Find('username', O) then
-    Username := O.AsString
-  else
-    Username := 'User';
+  Username := 'User';
 
-  //ShowMessage(JSOn.ToString);
+  UserID := AObj.Memory['user_id'].AsString;
+  if AObj.KeyExists('username') then Username := AObj.Memory['username'].AsString;
+  if AObj.KeyExists('email_address') then EmailAdress := AObj.Memory['email_address'].AsString;
 
-  JSON.Get('preferences', TJSONObject(nil)).Find('onequeue', O);
-  OneQueue := stringtoboolean(O.AsString);
-  JSON.Get('preferences', TJSONObject(nil)).Find('bitratepref', O);
-  BitRate := O.AsString;
+  if AObj.KeyExists('preferences') then begin
+    Obj := AObj.Memory['preferences'].AsObject;
 
-  UserID := JSON.Get('user_id', '');
-  if JSON.Find('created_on', O) then
-    S := O.AsString
-  else
-    S := BACKUP_DATE;
-  CreationDate := StringToDateTime(S);
+    if Obj.KeyExists('onequeue') then OneQueue := stringtoboolean(Obj.Memory['onequeue'].AsString);
+    if Obj.KeyExists('bitratepref') then BitRate := Obj.Memory['bitratepref'].AsString;
+  end;
 
-  if JSON.Find('verified', OB) then
-    Verified := OB.AsBoolean;
-  if JSON.Find('tester', OB) then
-      BetaTester := OB.AsBoolean;
+  if AObj.KeyExists('verified') then Verified := AObj.Memory['verified'].AsBoolean;
+  if AObj.KeyExists('tester') then BetaTester := AObj.Memory['tester'].AsBoolean;
+  if AObj.KeyExists('premium') then Premium := AObj.Memory['premium'].AsBoolean;
 
-  EmailAdress := JSON.Get('email_address', '');
-  if JSON.Find('premium', OB) then
-    Premium := OB.AsBoolean;
-  if JSON.Find('verified_on', O) then
-    S := O.AsString
-  else
-    S := BACKUP_DATE;
-  VerificationDate := StringToDateTime(S);
+  CreationDate := BACKUP_DATE;
+  VerificationDate := BACKUP_DATE;
+  try
+    if AObj.KeyExists('created_on') and AObj.Memory['created_on'].IsString then
+      CreationDate := StringToDateTime(AObj.Memory['created_on'].AsString);
+    if AObj.KeyExists('verified_on') and AObj.Memory['verified_on'].IsString then
+      VerificationDate := StringToDateTime(AObj.Memory['verified_on'].AsString);
+  except
+  end;
 end;
 
 { TAlbumItem }
@@ -2563,41 +2229,31 @@ begin
   Status := Status - [TWorkItem.DownloadingImage];
 end;
 
-procedure TAlbumItem.LoadFrom(JSONPair: TJSONData; AName: string);
+procedure TAlbumItem.LoadFrom(Key: string; AArr: IJArray);
 var
-  JSON, SONGS: TJSONArray;
-  I: Integer;
   AID: string;
 begin
-  JSON := JSONPair as TJSONArray;
-
-  // Data
-  ID := AName;
-
+  ID := Key;
   SetDataWorkStatus(Format('Loading album with ID of %S', [ID]));
+  //
 
-  AlbumName := (JSON.Items[0].AsString);
+  AlbumName := AArr.Memory[0].AsString;
 
   // TRACKS
-  SONGS := JSON.Items[1] as TJSONArray;
-  SetLength(TracksID, 0);
-
-  for I := 0 to SONGS.Count-1 do
-    begin
-      AID := SONGS.Items[I].AsString;
-      // Validate
-      if GetTrack(AID) <> -1 then
-        TracksID := TracksID + [AID];
-    end;
+  TracksID := [];
+  for AID in JArrayToStringArray(AArr.Memory[1]) do begin
+    if GetTrack(AID) <> -1 then
+      TracksID := TracksID + [AID];
+  end;
 
   // Data 2
-  ArtistID := (JSON.Items[2].AsString);
+  ArtistID := AArr.Memory[2].AsString;
 
-  IsInTrash := (JSON.Items[3].AsBoolean);
+  IsInTrash := AArr.Memory[3].AsBoolean;
 
-  Rating := (JSON.Items[4].AsInteger);
-  Disk := (JSON.Items[5].AsInteger);
-  Year := (JSON.Items[6].AsInteger);
+  Rating := AArr.Memory[4].AsInteger;
+  Disk := AArr.Memory[5].AsInteger;
+  Year := AArr.Memory[6].AsInteger;
 end;
 
 { TArtistItem }
@@ -2674,40 +2330,30 @@ begin
   Status := Status - [TWorkItem.DownloadingImage];
 end;
 
-procedure TArtistItem.LoadFrom(JSONPair: TJSONData; AName: string);
+procedure TArtistItem.LoadFrom(Key: string; AArr: IJArray);
 var
-  JSON, SONGS: TJSONArray;
-  I: Integer;
   AID: string;
 begin
-  JSON := JSONPair as TJSONArray;
-
-  // Data
-  ID := AName;
-
+  ID := Key;
   SetDataWorkStatus(Format('Loading artist with ID of %S', [ID]));
+  //
 
-  ArtistName := (JSON.Items[0].AsString);
+  ArtistName := AArr.Memory[0].AsString;
 
   // TRACKS
-  SONGS := JSON.Items[1] as TJSONArray;
-  SetLength(TracksID, 0);
-
-  for I := 0 to SONGS.Count-1 do
-    begin
-      AID := SONGS.Items[I].AsString;
-      // Validate
-      if GetTrack(AID) <> -1 then
-        TracksID := TracksID + [AID];
-    end;
+  TracksID := [];
+  for AID in JArrayToStringArray(AArr.Memory[1]) do begin
+    if GetTrack(AID) <> -1 then
+      TracksID := TracksID + [AID];
+  end;
 
   // Data 2
-  IsInTrash := (JSON.Items[2].AsBoolean);
-  Rating := (JSON.Items[3].AsInteger);
+  IsInTrash := AArr.Memory[2].AsBoolean;
+  Rating := AArr.Memory[3].AsInteger;
 
   ArtworkID := '';
-  if (JSON.Count > 4) and (JSON.Items[4].JSONType <> jtNull) then
-    ArtworkID := JSON.Items[4].AsString;
+  if (AArr.Count > 4) and AArr[4].IsString then
+    ArtworkID := AArr[4].AsString;
 end;
 
 { TPlaylistItem }
@@ -2771,55 +2417,39 @@ begin
       Result := CachedImage;
   end;
 
-  Result := CachedImage;
-
   Status := Status - [TWorkItem.DownloadingImage];
 end;
 
-procedure TPlaylistItem.LoadFrom(JSONPair: TJSONData; AName: string);
+procedure TPlaylistItem.LoadFrom(Key: string; AArr: IJArray);
 var
-  JSON, SONGS: TJSONArray;
-  I: Integer;
   AID: string;
 begin
-  JSON := JSONPair as TJSONArray;
-
-  // Data
-  ID := AName;
-
+  ID := Key;
   SetDataWorkStatus(Format('Loading playlist with ID of %S', [ID]));
+  //
 
-  Name := (JSON.Items[0].AsString);
+  Name := AArr.Memory[0].AsString;
 
   // TRACKS
-  SONGS := JSON.Items[1] as TJSONArray;
-  SetLength(TracksID, 0);
-
-  for I := 0 to SONGS.Count-1 do
-    begin
-      AID := SONGS.Items[I].AsString;
-      // Validate
-      if GetTrack(AID) <> -1 then
-        TracksID := TracksID + [AID];
-    end;
+  TracksID := [];
+  for AID in JArrayToStringArray(AArr.Memory[1]) do begin
+    if GetTrack(AID) <> -1 then
+      TracksID := TracksID + [AID];
+  end;
 
   // ?
   // ?
   // ?
 
   // Data 2
-  if JSON.Items[5].JSONType = jtString then
-    PlaylistType := JSON.Items[5].AsString
-  else
-    PlaylistType := '';
-  if JSON.Items[6].JSONType = jtString then
-    Description := JSON.Items[6].AsString
-  else
-    Description := '';
+  if (AArr.Count > 5) and AArr[5].IsString then
+    PlaylistType := AArr[5].AsString;
+  if (AArr.Count > 6) and AArr[6].IsString then
+    Description := AArr[6].AsString;
 
   ArtworkID := '';
-  if (JSON.Count > 7) and (JSON.Items[7].JSONType <> jtNull) then
-      ArtworkID := JSON.Items[7].AsString;
+  if (AArr.Count > 7) and AArr[7].IsString then
+    ArtworkID := AArr[7].AsString;
 
   // ?
 end;

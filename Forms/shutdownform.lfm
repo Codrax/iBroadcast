@@ -7,20 +7,21 @@ object shutdown: Tshutdown
   Caption = 'iBroadcast for Linux'
   ClientHeight = 200
   ClientWidth = 500
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
   object Label1: TLabel
     Left = 24
-    Height = 17
+    Height = 15
     Top = 88
-    Width = 93
+    Width = 78
     Caption = 'Shutting down'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 80
-    Height = 30
+    Height = 32
     Top = 24
-    Width = 189
+    Width = 169
     Caption = 'Cods iBroadcast'
     Font.Height = -24
     ParentColor = False
@@ -28,9 +29,9 @@ object shutdown: Tshutdown
   end
   object Label3: TLabel
     Left = 80
-    Height = 17
+    Height = 15
     Top = 48
-    Width = 172
+    Width = 141
     Caption = 'Powered by iBroadcast API'
     ParentColor = False
   end
@@ -155,9 +156,9 @@ object shutdown: Tshutdown
   end
   object Status_Text: TLabel
     Left = 24
-    Height = 17
+    Height = 15
     Top = 120
-    Width = 122
+    Width = 104
     Caption = 'Stopping threads...'
     Font.Style = [fsBold]
     ParentColor = False

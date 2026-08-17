@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls;
+  ComCtrls, Cod.Dialogs;
 
 type
 
@@ -19,6 +19,7 @@ type
     Label3: TLabel;
     ProgressBar1: TProgressBar;
     Status_Text: TLabel;
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -31,6 +32,15 @@ var
 implementation
 
 {$R *.lfm}
+
+{ Tshutdown }
+
+procedure Tshutdown.FormCreate(Sender: TObject);
+begin
+  {$IFDEF MSWINDOWS}
+  CenterFormInForm(Self, Application.MainForm);
+  {$ENDIF}
+end;
 
 end.
 

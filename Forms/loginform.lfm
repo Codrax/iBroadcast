@@ -4,19 +4,19 @@ object Login: TLogin
   Top = 235
   Width = 600
   Anchors = []
-  BorderIcons = []
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
-  Caption = 'Login to iBroadcast'
   ClientHeight = 400
   ClientWidth = 600
   ShowHint = True
   LCLVersion = '4.8.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   object Image1: TImage
     Left = 275
     Height = 100
-    Top = 10
+    Top = 20
     Width = 100
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963BE71000089504E47
@@ -936,12 +936,12 @@ object Login: TLogin
   object Label1: TLabel
     Left = 0
     Height = 40
-    Top = 120
+    Top = 135
     Width = 600
     Align = alTop
     Alignment = taCenter
-    BorderSpacing.Top = 120
-    Caption = 'Welcome to iBroadcast for Linux'
+    BorderSpacing.Top = 135
+    Caption = 'Welcome to iBroadcast'
     Font.Height = -29
     ParentColor = False
     ParentFont = False
@@ -949,15 +949,16 @@ object Login: TLogin
   object Label2: TLabel
     Left = 0
     Height = 25
-    Top = 165
+    Top = 180
     Width = 600
     Align = alTop
     Alignment = taCenter
     BorderSpacing.Top = 5
-    Caption = 'Login below with your application token'
+    Caption = 'Login below to get started!'
     Font.Height = -19
     ParentColor = False
     ParentFont = False
+    OnClick = Label2Click
   end
   object Label3: TLabel
     Left = 5
@@ -987,11 +988,11 @@ object Login: TLogin
   end
   object Panel1: TPanel
     Left = 200
-    Height = 88
-    Top = 200
+    Height = 64
+    Top = 224
     Width = 250
     BevelOuter = bvNone
-    ClientHeight = 88
+    ClientHeight = 64
     ClientWidth = 250
     Color = clBtnFace
     FullRepaint = False
@@ -1014,7 +1015,7 @@ object Login: TLogin
     object Panel3: TPanel
       Left = 0
       Height = 45
-      Top = 43
+      Top = 19
       Width = 250
       Align = alBottom
       BorderSpacing.Top = 10
@@ -1046,11 +1047,26 @@ object Login: TLogin
         Width = 200
         Align = alClient
         Caption = 'Login'
-        Default = True
         TabOrder = 1
         OnClick = Button2Click
       end
     end
+  end
+  object Label5: TLabel
+    Left = 0
+    Height = 23
+    Top = 322
+    Width = 600
+    Align = alBottom
+    Alignment = taCenter
+    AutoSize = False
+    BorderSpacing.Bottom = 15
+    Caption = 'Error message'
+    Font.Color = clMaroon
+    Font.Height = -15
+    Font.Style = [fsBold]
+    ParentFont = False
+    Visible = False
   end
   object Popup_Extra: TPopupMenu
     Left = 536

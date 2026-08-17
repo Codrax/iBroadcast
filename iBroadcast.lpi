@@ -23,7 +23,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="Forms;../../Lazarus Apps/Libraries/Codrut Library Pack;../../Lazarus Apps/Libraries/Delphi-BASS-main/BassVersions/BASS/Core;../../Lazarus Apps/Libraries/Delphi-BASS-main/BassVersions/BASS/Add-ons"/>
+            <OtherUnitFiles Value="C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -53,6 +53,9 @@
               </Win32>
             </Options>
           </Linking>
+          <Other>
+            <CustomOptions Value="-dSTRINGCOMPATABILITY"/>
+          </Other>
         </CompilerOptions>
       </Item>
       <Item Name="Release">
@@ -63,7 +66,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="Forms;../../Lazarus Apps/Libraries/Codrut Library Pack;../../Lazarus Apps/Libraries/Delphi-BASS-main/BassVersions/BASS/Core;../../Lazarus Apps/Libraries/Delphi-BASS-main/BassVersions/BASS/Add-ons"/>
+            <OtherUnitFiles Value="C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -84,6 +87,12 @@
               </Win32>
             </Options>
           </Linking>
+          <Other>
+            <CustomOptions Value="-dSTRINGCOMPATABILITY"/>
+            <OtherDefines Count="1">
+              <Define0 Value="STRINGCOMPATABILITY"/>
+            </OtherDefines>
+          </Other>
         </CompilerOptions>
       </Item>
     </BuildModes>
@@ -137,12 +146,29 @@
         <Filename Value="Forms/shutdownform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="shutdown"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="unitinfo.pas"/>
+        <Filename Value="Forms/about.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="UnitInfo"/>
+        <ComponentName Value="AboutDialog"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="About"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/about.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units/HashFunctions.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units/libdefine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="LibDefine"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -153,7 +179,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="Forms;C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source"/>
+      <OtherUnitFiles Value="C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -183,6 +209,12 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
+      </Item>
+      <Item>
+        <Name Value="EFCreateError"/>
+      </Item>
+      <Item>
+        <Name Value="EIdSocketError"/>
       </Item>
     </Exceptions>
   </Debugging>

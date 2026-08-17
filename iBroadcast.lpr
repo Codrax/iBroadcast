@@ -14,7 +14,7 @@ uses
   { you can add units after this }
   BroadcastAPI, SpectrumVis3D, uniqueinstanceraw, LoadingLibrary, About,
   taskexecution, iteminformation, ratingform, loginform,
-  createplaylistform, PopupPlayForm, UnitInfo;
+  createplaylistform, PopupPlayForm, HashFunctions;
 
 {$R *.res}
 
