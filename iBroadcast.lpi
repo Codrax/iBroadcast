@@ -139,6 +139,11 @@
         <ComponentName Value="shutdown"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
+      <Unit>
+        <Filename Value="unitinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UnitInfo"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -161,6 +166,12 @@
         </Win32>
       </Options>
     </Linking>
+    <Other>
+      <CustomOptions Value="-dSTRINGCOMPATABILITY"/>
+      <OtherDefines Count="1">
+        <Define0 Value="STRINGCOMPATABILITY"/>
+      </OtherDefines>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

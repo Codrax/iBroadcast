@@ -69,7 +69,19 @@ type
   { Threads }
 
   { TTaskThread }
-  TTaskThread = class(TThread)
+
+  { THTTPClientThread }
+
+  THTTPClientThread = class(TThread)
+  private
+    FHTTP: TIdHTTP;
+  protected
+    property HTTP: TIdHTTP read FHTTP;
+  public
+    constructor Create; virtual;
+    destructor Destroy; override;
+  end;
+  TTaskThread = class(THTTPClientThread)
   protected
     procedure IncCounter;
     procedure DecCounter;
@@ -85,7 +97,7 @@ type
     procedure DoWork; virtual;
     procedure DoFinish; virtual;
 
-    constructor Create; virtual;
+    constructor Create; override;
   end;
 
   { TDialogedTaskThread }
@@ -1120,6 +1132,22 @@ begin
   Result := Copy(Result, 1, Length(Result) - Length(ASeparator));
 end;
 
+{ THTTPClientThread }
+
+constructor THTTPClientThread.Create;
+begin
+  inherited Create(false);
+  FHTTP := V2_CreateHTTP;
+
+  FreeOnTerminate := true;
+end;
+
+destructor THTTPClientThread.Destroy;
+begin
+  HTTP.Free;
+  inherited Destroy;
+end;
+
 { TDialogCheckUpdatesThread }
 
 procedure TDialogCheckUpdatesThread.DoPrepare;
@@ -1813,7 +1841,7 @@ begin
           HTTP.OnWork := TrackDownloadW;
 
           // Request
-          HTTP.Get(Tracks[Index].GetPlaybackURL, FileStream);
+          HTTP.Get(Tracks[Index].GetStreamingURL, FileStream);
         finally
           HTTP.Free;
           FileStream.Free;
@@ -1884,7 +1912,7 @@ end;
 
 procedure TDialogCreatePlaylist.DoWork;
 begin
-  Succeeded := CreateNewPlayList(Name, Description, MakePublic, Tracks);
+  Succeeded := CreateNewPlayList(HTTP, Name, Description, MakePublic, Tracks);
 end;
 
 { TDialoggedDownloadSongThread }
@@ -1977,7 +2005,7 @@ var
   URL: string;
 begin
   // Files
-  URL := Tracks[DownloadIndex].GetPlaybackURL;
+  URL := Tracks[DownloadIndex].GetStreamingURL;
 
   // Create
   HTTP := TIdHTTP.Create;
@@ -2307,7 +2335,7 @@ begin
   case ItemSource of
     TDataSource.Tracks: begin
       // API
-      Succeeded := UpdateTrackRating(ItemID, NewRating, false);
+      Succeeded := UpdateTrackRating(HTTP, ItemID, NewRating, false);
 
       // Also update locally (decreases reload requests by 1, better performance)
       Index := GetTrack(ItemID);
@@ -2315,12 +2343,12 @@ begin
         Tracks[Index].Rating := NewRating;
 
       // Playlist
-      TrackRatingToLikedPlaylist(ItemID);
+      TrackRatingToLikedPlaylist(HTTP, ItemID);
 
-      LoadLibraryAdvanced([TLoad.Track, TLoad.PlayList]);
+      LoadLibrary(HTTP, [TLoad.Track, TLoad.PlayList]);
     end;
 
-    TDataSource.Albums: Succeeded := BroadcastAPI.UpdateAlbumRating(ItemID, NewRating, true);
+    TDataSource.Albums: Succeeded := BroadcastAPI.UpdateAlbumRating(HTTP, ItemID, NewRating, true);
 
     else { nothing };
   end;
@@ -2357,25 +2385,25 @@ begin
           D := Playlists[Index].Description;
 
         // Name, Description
-        Succeeded := UpdatePlayList(ItemID, N, D, false);
+        Succeeded := UpdatePlayList(HTTP, ItemID, N, D, false);
       end;
 
     // Tracks
     if ChangeTracks then
-      Succeeded := ChangePlayList(ItemID, NewTracks)
+      Succeeded := ChangePlayList(HTTP, ItemID, NewTracks)
     else
     if AppendTracks then
-      Succeeded := AppentToPlaylist(ItemID, NewTracks)
+      Succeeded := AppentToPlaylist(HTTP, ItemID, NewTracks)
     else
     if PreAppendTracks then
-      Succeeded := PreappendToPlaylist(ItemID, NewTracks)
+      Succeeded := PrependToPlaylist(HTTP, ItemID, NewTracks)
     else
     if DeleteTracks then
-    Succeeded := DeleteFromPlaylist(ItemID, NewTracks);
+    Succeeded := DeleteFromPlaylist(HTTP, ItemID, NewTracks);
 
     // Reload
     if Succeeded then
-      LoadLibraryAdvanced([TLoad.PlayList]);
+      LoadLibrary(HTTP, [TLoad.PlayList]);
   except
     Succeeded := false;
   end;
@@ -2403,7 +2431,7 @@ end;
 
 procedure TPushHistoryThread.DoWork;
 begin
-  PushHistory( Items );
+  PushHistory(HTTP, Items);
 end;
 
 { TDialogRestoreItem }
@@ -2418,9 +2446,9 @@ begin
   // Restore
   try
     case Source of
-      TDataSource.Tracks: Succeeded := RestoreTrack(ItemID);
-      TDataSource.Albums: Succeeded := RestoreAlbum(ItemID);
-      TDataSource.Artists: Succeeded := RestoreArtist(ItemID);
+      TDataSource.Tracks: Succeeded := RestoreTracks(HTTP, [ItemID]);
+      TDataSource.Albums: Succeeded := RestoreAlbum(HTTP, ItemID);
+      TDataSource.Artists: Succeeded := RestoreArtist(HTTP, ItemID);
       TDataSource.Playlists: { nothing };
     end;
   except
@@ -2440,11 +2468,11 @@ begin
   // Delete
   try
     case Source of
-      TDataSource.Tracks: Succeeded := DeleteTrack(ItemID);
-      TDataSource.Albums: Succeeded := DeleteAlbum(ItemID);
-      TDataSource.Artists: Succeeded := DeleteArtist(ItemID);
-      TDataSource.Playlists: Succeeded := DeletePlayList(ItemID);
-      TDataSource.Genres: Succeeded := DeleteGenre(ItemID);
+      TDataSource.Tracks: Succeeded := DeleteTracks(HTTP, [ItemID]);
+      TDataSource.Albums: Succeeded := DeleteAlbum(HTTP, ItemID);
+      TDataSource.Artists: Succeeded := DeleteArtist(HTTP, ItemID);
+      TDataSource.Playlists: Succeeded := DeletePlayList(HTTP, ItemID);
+      TDataSource.Genres: Succeeded := DeleteGenre(HTTP, ItemID);
     end;
   except
     Succeeded := false;
@@ -2468,7 +2496,7 @@ end;
 procedure TDialogTashEmptyTrash.DoWork;
 begin
   try
-    Succeeded := CompleteEmptyTrash;
+    Succeeded := CompleteEmptyTrash(HTTP);
   except
     Succeeded := false;
   end;
@@ -2522,7 +2550,7 @@ begin
 
   // Status
   if IsAuthenthicated then
-    LoadStatus;
+    LoadStatus(HTTP);
 end;
 
 procedure TLoginThread.DoFinish;
@@ -2544,7 +2572,7 @@ end;
 
 procedure TLoadLibraryThread.DoWork;
 begin
-  LoadLibrary;
+  LoadLibrary(HTTP);
 end;
 
 procedure TLoadLibraryThread.DoFinish;
@@ -2655,8 +2683,7 @@ end;
 
 constructor TTaskThread.Create;
 begin
-  inherited Create(true);
-  FreeOnTerminate:=true;
+  inherited Create;
 end;
 
 { TDownloadArtworkThread }
@@ -3813,7 +3840,6 @@ begin
   OnDataWorkStatusChange := APIStatusDataChanged;
   OnUpdateType := BackendUpdate;
 
-  OnReturnToLogin := DoReturnToLogin;
 
   // Prepare UI
   QueueUpdateUI;
@@ -4443,7 +4469,14 @@ begin
   if not DirectoryExists(AFolder) then
     raise Exception.Create('Config error, app cannot be configured');
 
+  {$IFDEF MSWINDOWS}
+  AppData := IncludeTrailingPathDelimiter(AFolder + 'Codrut Software\');
+  if not DirectoryExists(AppData) then
+    MkDir(AppData);
+  AppData := IncludeTrailingPathDelimiter(AFolder + 'Codrut Software\iBroadcast');
+  {$ELSE}
   AppData := IncludeTrailingPathDelimiter(AFolder + 'cod-ibroadcast');
+  {$ENDIF}
 
   if not DirectoryExists(AppData) then
     MkDir(AppData);
@@ -6425,7 +6458,7 @@ begin
 
   // Play
   case PlayType of
-    TPlayType.Streaming: Player.OpenURL( TTrackItem(Tracks[Index]).GetPlaybackURL );
+    TPlayType.Streaming: Player.OpenURL( TTrackItem(Tracks[Index]).GetStreamingURL );
 
     TPlayType.Local: Player.OpenFile(O);
 
