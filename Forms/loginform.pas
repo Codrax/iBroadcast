@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  Menus, helpform, BroadcastAPI;
+  Menus, BroadcastAPI, Cod.Forms, Cod.SysUtils;
 
 type
 
@@ -15,15 +15,11 @@ type
   TLogin = class(TForm)
     Button1: TButton;
     Button2: TButton;
-    Login_AppToken: TEdit;
-    Login_AppID: TEdit;
     Image1: TImage;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     Popup_Extra: TPopupMenu;
@@ -49,29 +45,28 @@ var
 
 implementation
 
+uses
+  MainUI;
+
 {$R *.lfm}
 
 { TLogin }
 
 procedure TLogin.MenuItem2Click(Sender: TObject);
 begin
-  Help := THelp.Create(Self);
-  with Help do
-    try
-      ShowModal;
-    finally
-      Free;
-    end;
+  ShellRun(URL_HELP, true);
 end;
 
 procedure TLogin.FormCreate(Sender: TObject);
 begin
-  Login_AppID.Text := APPLICATION_ID;
+  {$IFDEF MSWINDOWS}
+  CenterFormInForm(Self, Application.MainForm);
+  {$ENDIF}
 end;
 
 procedure TLogin.MenuItem1Click(Sender: TObject);
 begin
-  Panel2.Visible:=TMenuItem(Sender).Checked;
+  ShellRun('https://media.ibroadcast.com/', true);
 end;
 
 procedure TLogin.Button1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -90,12 +85,6 @@ end;
 
 procedure TLogin.Button2Click(Sender: TObject);
 begin
-  if Login_AppToken.Text = '' then
-    begin
-      MessageDlg('Please enter a valid login token', mtWarning, [mbOk], 0);
-      Exit;
-    end;
-
   ModalResult := mrOk;
 end;
 

@@ -1985,6 +1985,7 @@ begin
   TotalWorkCount := 0;
 end;
 
+
 function CalculateLength(Seconds: cardinal): string;
 var
   Minutes, Hours: cardinal;

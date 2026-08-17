@@ -1,18 +1,18 @@
 object Login: TLogin
   Left = 749
-  Height = 500
+  Height = 400
   Top = 235
-  Width = 650
+  Width = 600
   Anchors = []
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Login to iBroadcast'
-  ClientHeight = 500
-  ClientWidth = 650
+  ClientHeight = 400
+  ClientWidth = 600
+  ShowHint = True
+  LCLVersion = '4.8.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  ShowHint = True
-  LCLVersion = '2.2.6.0'
   object Image1: TImage
     Left = 275
     Height = 100
@@ -935,9 +935,9 @@ object Login: TLogin
   end
   object Label1: TLabel
     Left = 0
-    Height = 36
+    Height = 40
     Top = 120
-    Width = 650
+    Width = 600
     Align = alTop
     Alignment = taCenter
     BorderSpacing.Top = 120
@@ -948,50 +948,50 @@ object Login: TLogin
   end
   object Label2: TLabel
     Left = 0
-    Height = 27
-    Top = 161
-    Width = 650
+    Height = 25
+    Top = 165
+    Width = 600
     Align = alTop
     Alignment = taCenter
     BorderSpacing.Top = 5
     Caption = 'Login below with your application token'
-    Font.Height = -21
+    Font.Height = -19
     ParentColor = False
     ParentFont = False
   end
   object Label3: TLabel
     Left = 5
-    Height = 19
-    Top = 476
-    Width = 640
+    Height = 15
+    Top = 380
+    Width = 590
     Align = alBottom
     Alignment = taCenter
     BorderSpacing.Around = 5
-    Caption = 'iBroadcast LLC is not legally affiliated with Codrut Software'
-    Font.Height = -15
+    Caption = 'iBroadcast LLC. is not legally affiliated with Codrut Software SRL.'
+    Font.Height = -12
     ParentColor = False
     ParentFont = False
   end
   object Label4: TLabel
     Left = 5
-    Height = 19
-    Top = 452
-    Width = 640
+    Height = 15
+    Top = 360
+    Width = 590
     Align = alBottom
     Alignment = taCenter
     BorderSpacing.Around = 5
-    Caption = 'Copyright 2023 Codrut Software'
-    Font.Height = -15
+    Caption = 'Copyright 2026 Codrut Software'
+    Font.Height = -12
     ParentColor = False
     ParentFont = False
   end
   object Panel1: TPanel
     Left = 200
-    Height = 225
+    Height = 88
     Top = 200
     Width = 250
     BevelOuter = bvNone
-    ClientHeight = 225
+    ClientHeight = 88
     ClientWidth = 250
     Color = clBtnFace
     FullRepaint = False
@@ -1000,78 +1000,21 @@ object Login: TLogin
     TabOrder = 0
     object Panel2: TPanel
       Left = 0
-      Height = 64
-      Top = 74
+      Height = 0
+      Top = 10
       Width = 250
       Align = alTop
       AutoSize = True
       BorderSpacing.Top = 10
       BevelOuter = bvNone
-      ClientHeight = 64
-      ClientWidth = 250
       FullRepaint = False
       ParentBackground = False
       TabOrder = 0
-      Visible = False
-      object Login_AppID: TEdit
-        Left = 20
-        Height = 35
-        Top = 29
-        Width = 210
-        Align = alTop
-        Alignment = taCenter
-        BorderSpacing.Left = 20
-        BorderSpacing.Right = 20
-        Font.Height = -21
-        ParentFont = False
-        TabOrder = 0
-        TextHint = 'App ID'
-      end
-      object Label6: TLabel
-        Left = 0
-        Height = 24
-        Top = 5
-        Width = 250
-        Align = alTop
-        Alignment = taCenter
-        BorderSpacing.Top = 5
-        Caption = 'Application ID'
-        Font.Height = -19
-        ParentColor = False
-        ParentFont = False
-      end
-    end
-    object Label5: TLabel
-      Left = 0
-      Height = 24
-      Top = 5
-      Width = 250
-      Align = alTop
-      Alignment = taCenter
-      BorderSpacing.Top = 5
-      Caption = 'Login Token'
-      Font.Height = -19
-      ParentColor = False
-      ParentFont = False
-    end
-    object Login_AppToken: TEdit
-      Left = 20
-      Height = 35
-      Top = 29
-      Width = 210
-      Align = alTop
-      Alignment = taCenter
-      BorderSpacing.Left = 20
-      BorderSpacing.Right = 20
-      Font.Height = -21
-      ParentFont = False
-      TabOrder = 1
-      TextHint = 'Token'
     end
     object Panel3: TPanel
       Left = 0
       Height = 45
-      Top = 180
+      Top = 43
       Width = 250
       Align = alBottom
       BorderSpacing.Top = 10
@@ -1082,7 +1025,7 @@ object Login: TLogin
       FullRepaint = False
       ParentBackground = False
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 1
       object Button1: TButton
         Left = 200
         Height = 45
@@ -1092,9 +1035,9 @@ object Login: TLogin
         Caption = '⋯'
         Font.Height = -27
         Font.Style = [fsBold]
-        OnMouseDown = Button1MouseDown
         ParentFont = False
         TabOrder = 0
+        OnMouseDown = Button1MouseDown
       end
       object Button2: TButton
         Left = 0
@@ -1104,8 +1047,8 @@ object Login: TLogin
         Align = alClient
         Caption = 'Login'
         Default = True
-        OnClick = Button2Click
         TabOrder = 1
+        OnClick = Button2Click
       end
     end
   end
@@ -1114,14 +1057,14 @@ object Login: TLogin
     Top = 208
     object MenuItem1: TMenuItem
       AutoCheck = True
-      Caption = 'Enable advanced login'
+      Caption = 'Open iBroadcast website'
       OnClick = MenuItem1Click
     end
     object Separator1: TMenuItem
       Caption = '-'
     end
     object MenuItem2: TMenuItem
-      Caption = 'Open help page'
+      Caption = 'Help'
       OnClick = MenuItem2Click
     end
   end

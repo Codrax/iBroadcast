@@ -4556,9 +4556,6 @@ begin
     try
       case ShowModal of
         mrOk: begin
-          LOGIN_TOKEN := Login_AppToken.Text;
-          APPLICATION_ID := Login_AppID.Text;
-
           // Retry
           if DoLogin then
             SaveCredentials;

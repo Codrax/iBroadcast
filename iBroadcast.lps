@@ -7,10 +7,9 @@
       <Unit>
         <Filename Value="iBroadcast.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="18" Y="41"/>
-        <UsageCount Value="97"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="9" Y="47"/>
+        <UsageCount Value="98"/>
       </Unit>
       <Unit>
         <Filename Value="mainui.pas"/>
@@ -19,10 +18,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainUI"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="4445"/>
-        <CursorPos X="77" Y="4472"/>
-        <UsageCount Value="97"/>
+        <TopLine Value="4533"/>
+        <CursorPos X="20" Y="4558"/>
+        <UsageCount Value="98"/>
         <Bookmarks Count="1">
           <Item0 X="37" Y="2785" Left="1" Top="2781" ID="2"/>
         </Bookmarks>
@@ -38,7 +36,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="9"/>
         <CursorPos X="13" Y="59"/>
-        <UsageCount Value="81"/>
+        <UsageCount Value="82"/>
       </Unit>
       <Unit>
         <Filename Value="Forms/popupplayform.pas"/>
@@ -50,7 +48,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="26" Y="55"/>
-        <UsageCount Value="78"/>
+        <UsageCount Value="79"/>
       </Unit>
       <Unit>
         <Filename Value="Forms/shutdownform.pas"/>
@@ -60,7 +58,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
         <CursorPos X="11" Y="29"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="67"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UnitInfo"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28" Y="14"/>
+        <UsageCount Value="29"/>
       </Unit>
       <Unit>
         <Filename Value="SpectrumVis3D.pas"/>
@@ -73,10 +79,12 @@
         <ComponentName Value="Login"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="19"/>
-        <CursorPos X="49" Y="34"/>
-        <UsageCount Value="8"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="9" Y="9"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="Forms/helpform.pas"/>
@@ -84,8 +92,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="31" Y="11"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="15" Y="6"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="../Libraries/Codrut Library Pack/Cod.Audio.pas"/>
@@ -116,9 +124,9 @@
       </Unit>
       <Unit>
         <Filename Value="BroadcastAPI.pas"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="1390"/>
-        <CursorPos X="34" Y="1417"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="570"/>
+        <CursorPos X="39" Y="583"/>
         <UsageCount Value="34"/>
         <Bookmarks Count="1">
           <Item0 X="18" Y="257" Left="1" Top="240" ID="1"/>
@@ -140,10 +148,12 @@
         <ComponentName Value="ItemInfo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="23"/>
-        <CursorPos X="21" Y="24"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="100"/>
+        <CursorPos Y="136"/>
         <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/fpcsrc/3.2.2/rtl/objpas/sysutils/syshelph.inc"/>
@@ -285,7 +295,7 @@
       <Unit>
         <Filename Value="Forms/helpform.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -924,139 +934,130 @@
         <CursorPos X="10" Y="52"/>
         <UsageCount Value="9"/>
       </Unit>
-      <Unit>
-        <Filename Value="unitinfo.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="UnitInfo"/>
-        <EditorIndex Value="2"/>
-        <CursorPos X="28" Y="14"/>
-        <UsageCount Value="29"/>
-        <Loaded Value="True"/>
-      </Unit>
     </Units>
     <OtherDefines Count="1">
       <Define0 Value="STRINGCOMPATABILITY"/>
     </OtherDefines>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="2763" Column="63" TopLine="2725"/>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="2567" Column="61" TopLine="2549"/>
       </Position>
       <Position>
         <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="2059" Column="36" TopLine="2029"/>
+        <Caret Line="1402" Column="54" TopLine="1391"/>
       </Position>
       <Position>
         <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1362" Column="22" TopLine="1319"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1349" Column="20" TopLine="1322"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="605" Column="3" TopLine="578"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1349" Column="22" TopLine="1322"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="290" Column="10" TopLine="263"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1350" Column="46" TopLine="1322"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1344" Column="25" TopLine="1302"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1345" Column="14" TopLine="1323"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1544" Column="27" TopLine="1534"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1589" Column="41" TopLine="1555"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1584" Column="30" TopLine="1554"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1574" Column="7" TopLine="1531"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1581" Column="15" TopLine="1540"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1618" Column="11" TopLine="1590"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="372" Column="40" TopLine="370"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1658" Column="44" TopLine="1658"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="371" Column="74" TopLine="371"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1618" Column="11" TopLine="1591"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="371" Column="40" TopLine="370"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1618" Column="42" TopLine="1618"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="371" Column="16" TopLine="370"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1618" Column="51" TopLine="1618"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1658" Column="70" TopLine="1631"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="356" Column="47" TopLine="329"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1410" Column="3" TopLine="1396"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="356" Column="15" TopLine="328"/>
-      </Position>
-      <Position>
-        <Filename Value="BroadcastAPI.pas"/>
-        <Caret Line="1417" Column="52" TopLine="1407"/>
+        <Caret Line="2376" Column="35" TopLine="2328"/>
       </Position>
       <Position>
         <Filename Value="mainui.pas"/>
-        <Caret Line="2567" Column="61" TopLine="2549"/>
+        <Caret Line="4478" Column="67" TopLine="4445"/>
+      </Position>
+      <Position>
+        <Filename Value="BroadcastAPI.pas"/>
+        <Caret Line="1639" Column="3" TopLine="1612"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="4454" Column="26" TopLine="4442"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="774" Column="19" TopLine="766"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="4554" Column="3" TopLine="4550"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="4557" Column="37" TopLine="4538"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="777" Column="50" TopLine="749"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="2916" Column="16" TopLine="2871"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="8" Column="39"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="58" Column="3" TopLine="56"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="59" Column="16" TopLine="50"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="58" Column="28" TopLine="50"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="9" Column="57"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="53" Column="3" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="61" Column="3" TopLine="57"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="92" Column="24" TopLine="57"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="91" Column="24" TopLine="56"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="90" Column="24" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="89" Column="24" TopLine="54"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="88" Column="24" TopLine="53"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="9" Column="18"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="102" Column="28" TopLine="53"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="9" Column="18"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="90" Column="20" TopLine="53"/>
+      </Position>
+      <Position>
+        <Filename Value="BroadcastAPI.pas"/>
+        <Caret Line="583" Column="39" TopLine="570"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="88" TopLine="45"/>
+      </Position>
+      <Position>
+        <Filename Value="Forms/loginform.pas"/>
+        <Caret Line="9" Column="9"/>
       </Position>
     </JumpHistory>
     <RunParams>
