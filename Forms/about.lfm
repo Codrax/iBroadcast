@@ -7,8 +7,8 @@ object AboutDialog: TAboutDialog
   Caption = 'About'
   ClientHeight = 330
   ClientWidth = 450
+  LCLVersion = '4.8.0.0'
   OnCreate = FormCreate
-  LCLVersion = '2.2.6.0'
   object PageControl1: TPageControl
     Left = 40
     Height = 32

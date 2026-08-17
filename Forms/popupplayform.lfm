@@ -11,10 +11,10 @@ object PopupPlay: TPopupPlay
   ClientHeight = 200
   ClientWidth = 400
   FormStyle = fsStayOnTop
+  LCLVersion = '4.8.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.2.6.0'
   object Panel7: TPanel
     Left = 0
     Height = 120
@@ -27,6 +27,7 @@ object PopupPlay: TPopupPlay
     FullRepaint = False
     ParentBackground = False
     TabOrder = 0
+    OnClick = Panel7Click
     object Music_Artwork: TImage
       Left = 16
       Height = 75
@@ -36,9 +37,9 @@ object PopupPlay: TPopupPlay
     end
     object Music_Name: TLabel
       Left = 104
-      Height = 30
+      Height = 32
       Top = 24
-      Width = 136
+      Width = 125
       Caption = 'Track Name'
       Font.Height = -24
       ParentColor = False
@@ -47,18 +48,18 @@ object PopupPlay: TPopupPlay
     end
     object Music_Artist: TLabel
       Left = 104
-      Height = 17
+      Height = 15
       Top = 56
-      Width = 71
+      Width = 61
       Caption = 'Artist name'
       ParentColor = False
       ShowAccelChar = False
     end
     object Music_Time: TLabel
       Left = 104
-      Height = 17
+      Height = 15
       Top = 80
-      Width = 67
+      Width = 53
       Caption = '0:00/0:00'
       Font.Style = [fsBold]
       ParentColor = False
@@ -75,9 +76,9 @@ object PopupPlay: TPopupPlay
       Caption = '⇤'
       Enabled = False
       Font.Height = -32
-      OnClick = ButtonsClick
       ParentFont = False
       TabOrder = 0
+      OnClick = ButtonsClick
     end
     object Music_Play: TButton
       Left = 270
@@ -90,9 +91,9 @@ object PopupPlay: TPopupPlay
       BorderSpacing.Right = 2
       Caption = '⏳'
       Font.Height = -21
-      OnClick = ButtonsClick
       ParentFont = False
       TabOrder = 1
+      OnClick = ButtonsClick
     end
     object Music_Next: TButton
       Left = 334
@@ -104,9 +105,9 @@ object PopupPlay: TPopupPlay
       Caption = '⇥'
       Enabled = False
       Font.Height = -32
-      OnClick = ButtonsClick
       ParentFont = False
       TabOrder = 2
+      OnClick = ButtonsClick
     end
     object Button1: TButton
       Left = 16
@@ -114,8 +115,8 @@ object PopupPlay: TPopupPlay
       Top = 87
       Width = 75
       Caption = '⮐ Back'
-      OnClick = Button1Click
       TabOrder = 3
+      OnClick = Button1Click
     end
   end
   object Visualisation_Player: TPaintBox

@@ -10,10 +10,10 @@ uses
   {$ENDIF}{$ENDIF}
   LibDefine,
   Interfaces, // this includes the LCL widgetset
-  Forms, mainui, dialogs,
+  Forms, mainui, dialogs, Cod.SysUtils,
   { you can add units after this }
   BroadcastAPI, SpectrumVis3D, uniqueinstanceraw, LoadingLibrary, About,
-  taskexecution, iteminformation, ratingform, loginform, helpform,
+  taskexecution, iteminformation, ratingform, loginform,
   createplaylistform, PopupPlayForm;
 
 {$R *.res}
@@ -44,16 +44,7 @@ begin
         IsOffline := true;
 
       if Param = '--help' then
-        begin
-            Help := THelp.Create(nil);
-            with Help do
-              try
-                ShowModal;
-              finally
-                Free;
-              end;
-            Halt;
-        end;
+        ShellRun(URL_HELP, true);
     end;
 
 

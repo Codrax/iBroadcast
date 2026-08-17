@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  Menus, ExtDlgs, taskexecution, MainUI, BroadcastAPI, ratingform;
+  Menus, ExtDlgs, taskexecution, MainUI, BroadcastAPI, ratingform,
+  Cod.Forms;
 
 type
 
@@ -31,6 +32,7 @@ type
     Cover_Save: TPopupMenu;
     Rate_Box: TPanel;
     procedure Cover_SavePopup(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure Item_DescriptionChange(Sender: TObject);
     procedure Item_DownloadedClick(Sender: TObject);
     procedure Item_RatingClick(Sender: TObject);
@@ -127,6 +129,13 @@ procedure TItemInfo.Cover_SavePopup(Sender: TObject);
 begin
   MenuItem2.Visible := Item^.Source in [TDataSource.Tracks, TDataSource.Artists,
     TDataSource.Playlists];
+end;
+
+procedure TItemInfo.FormCreate(Sender: TObject);
+begin
+  {$IFDEF MSWINDOWS}
+  CenterFormInForm(Self, Application.MainForm);
+  {$ENDIF}
 end;
 
 procedure TItemInfo.Item_DescriptionChange(Sender: TObject);

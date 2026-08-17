@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  Menus;
+  Menus, Cod.Forms;
 
 type
 
@@ -24,6 +24,7 @@ type
     Title: TLabel;
     procedure Button2MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -49,6 +50,13 @@ begin
     end;
 
   ModalResult := mrOk;
+end;
+
+procedure TCreatePlaylist.FormCreate(Sender: TObject);
+begin
+  {$IFDEF MSWINDOWS}
+  CenterFormInForm(Self, Application.MainForm);
+  {$ENDIF}
 end;
 
 end.

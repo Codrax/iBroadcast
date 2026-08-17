@@ -20,9 +20,9 @@ uses
   LibDefine,
 
   // Cod
-  Cod.ArrayHelpers, Cod.Math,  Cod.Files, Cod.Types, Cod.Graphics,
-  Cod.ColorUtils, Cod.StringUtils, Cod.Internet, Cod.VersionUpdate,
-  Cod.SysUtils,
+  Cod.ArrayHelpers, Cod.Math,  Cod.Files, Cod.Types,
+  Cod.StringUtils, Cod.Internet, Cod.Version, Cod.Graphics,
+  Cod.SysUtils, Cod.Forms, Cod.Helpers, Cod.Helpers.Vcl,
 
   // Audio
   Bass, Cod.Audio,
@@ -192,7 +192,7 @@ type
 
   { TDialogCheckUpdatesThread }
   TDialogCheckUpdatesThread = class(TDialogedTaskThread)
-    ServerVersion: TVersionRec;
+    ServerVersion: TVersion;
 
     procedure DoPrepare; override;
     procedure DoWork; override;
@@ -661,6 +661,7 @@ type
     procedure Music_SpeedKeyPress(Sender: TObject; var Key: char);
     procedure Music_SpeedMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure Panel7Click(Sender: TObject);
     procedure Popup_IDClick(Sender: TObject);
     procedure Popup_Playlist_RemoveClick(Sender: TObject);
     procedure Music_Menu1Click(Sender: TObject);
@@ -921,6 +922,9 @@ const
   CUSTOM_INTERACT = [TPage.Queue];
   DRAG_ABLE_PAGES = [TPage.Queue];
 
+  // URLs
+  URL_HELP = 'https://docs.codrutsoft.com/apps/ibroadcast/';
+
 var
   Main: TMain;
 
@@ -1016,7 +1020,7 @@ var
   IndexHover: integer;
 
   SortType: TSortType;
-  SortingList: TIntArray;
+  SortingList: TArray<integer>;
 
   // Page custom draw
   HomeColumns: integer;
@@ -1047,7 +1051,6 @@ uses
   About,
   taskexecution,
   iteminformation,
-  helpform,
   loginform,
   createplaylistform,
   PopupPlayForm;
@@ -1133,7 +1136,7 @@ end;
 procedure TDialogCheckUpdatesThread.DoWork;
 begin
   try
-    ServerVersion.APILoad('ibroadcast-linux');
+    //ServerVersion.APILoad('ibroadcast-linux');
 
     Succeeded := true;
   except
@@ -1219,7 +1222,7 @@ begin
   for I := 0 to High(Items) do
     if Items[I] <> '' then
       try
-        Result.AddValue(Items[I]);
+        Result := Result + [Items[I]];
       except
         Exit([]);
       end;
@@ -2754,9 +2757,9 @@ function TDrawItem.ToggleDownloaded: boolean;
 begin
   Result := not Downloaded;
   if Result then
-    DownloadManager.AddItem(PopupItem.ItemID, PopupItem.Source)
+    DownloadManager.AddItem(ItemID, Source)
   else
-    DownloadManager.RemoveItem(PopupItem.ItemID, PopupItem.Source);
+    DownloadManager.RemoveItem(ItemID, Source);
 
   // Begin update
   DownloadManager.CheckDownloads;
@@ -3173,7 +3176,10 @@ begin
       if IndexDown = IndexHover then
         case Button of
           TMouseButton.mbLeft: begin
-            DrawItems[IndexHover].Execute;
+            if ssAlt in Shift then
+              DrawItems[IndexHover].OpenInformation
+            else
+              DrawItems[IndexHover].Execute;
           end;
 
           TMouseButton.mbRight: begin
@@ -3296,7 +3302,7 @@ begin
     SaveQueueToFile;
 
   // Form position
-  FormPositionSettings(Main, AppData + 'form.ini', false);
+  SaveFormPositions(Main, AppData + 'form.ini');
 
   // Threads
   StopThreads;
@@ -3316,7 +3322,7 @@ begin
       Music_Time.Caption := Format('%S/%S', [CalculateLength(trunc(Player.PositionSeconds)), PlayerTotalLength]);
 
       // Song done
-      if (Player.PlayStatus = TPlayStatus.psStopped) and (LastPlayStatus = TPlayStatus.psPlaying) then
+      if (Player.PlayStatus = TPlayStatus.Stopped) and (LastPlayStatus = TPlayStatus.Playing) then
         SongFinished;
     end;
 
@@ -3448,6 +3454,11 @@ begin
     TTrackBar(Sender).Position:=100;
 end;
 
+procedure TMain.Panel7Click(Sender: TObject);
+begin
+
+end;
+
 procedure TMain.Popup_IDClick(Sender: TObject);
 begin
   Clipboard.AsText := PopupItem.ItemID;
@@ -3514,13 +3525,7 @@ end;
 
 procedure TMain.MenuItem2Click(Sender: TObject);
 begin
-  Help := THelp.Create(Self);
-  with Help do
-    try
-      ShowModal;
-    finally
-      Free;
-    end;
+  ShellRun(URL_HELP, true);
 end;
 
 procedure TMain.Music_ArtistClick(Sender: TObject);
@@ -3692,8 +3697,10 @@ procedure TMain.Control_ToggleSearchClick(Sender: TObject);
 procedure SetW(Value: integer);
 begin
   Filter_Box.Width := Value;
-  Application.ProcessMessages;
-  Sleep(1);
+  if Value mod 5 = 0 then begin
+     Sleep(1);
+     Application.ProcessMessages;
+  end;
 end;
 
 var
@@ -3764,7 +3771,7 @@ begin
   DoScaling;
 
   // Form position
-  FormPositionSettings(Main, AppData + 'form.ini', true);
+  LoadFormPositions(Main, AppData + 'form.ini');
 
   // Create lists
   Queue := TStringList.Create;
@@ -3917,7 +3924,7 @@ begin
                 Tag:=I;
 
                 ShowAlwaysCheckable:=true;
-                Checked := Playlists[I].TracksID.Find(PopupItem.ItemID) <> -1;
+                Checked := TArrayUtils<string>.Contains(PopupItem.ItemID, Playlists[I].TracksID);
 
                 OnClick := Generic_AddPlaylistClick;
               end;
@@ -4072,9 +4079,9 @@ end;
 procedure TMain.Music_PlayClick(Sender: TObject);
 begin
   case Player.PlayStatus of
-    TPlayStatus.psStopped,
-    TPlayStatus.psPaused: Player.Play;
-    TPlayStatus.psPlaying: Player.Pause;
+    TPlayStatus.Stopped,
+    TPlayStatus.Paused: Player.Play;
+    TPlayStatus.Playing: Player.Pause;
   end;
 end;
 
@@ -4098,7 +4105,7 @@ begin
   Dest := TTrackBar(Sender).Position / 10;
   if PlayType = TPlayType.Streaming then
     begin
-      SetPlayIcon(psStalled);
+      SetPlayIcon(TPlayStatus.Stalled);
       Application.ProcessMessages;
       Player.Volume:=0;
 
@@ -4695,8 +4702,8 @@ begin
 
   if not (TSearchFlag.ExactMatch in Flags) then
     begin
-      MashedSource := ClearStringSimbols(MashedSource);
-      MashedCompare := ClearStringSimbols(MashedCompare);
+      MashedSource := ClearStringSymbols(MashedSource);
+      MashedCompare := ClearStringSymbols(MashedCompare);
     end;
 
   // Compare
@@ -5095,7 +5102,7 @@ end;
 
 procedure TMain.ShuffleQueue;
 var
-  RandomQueue: TIntArray;
+  RandomQueue: TArray<integer>;
   I, RandIndex, Start: integer;
 begin
   if Queue.Count = 0 then
@@ -5135,7 +5142,7 @@ end;
 
 procedure TMain.DoCustomDraw(Sender: TObject);
 const
-  HEAD_SIZE = 20;
+  HEAD_SIZE = 18;
 var
   AWidth, AHeight, Index, I, J, X, Y: integer;
   FitX, ExtraSpacing: integer;
@@ -5245,7 +5252,7 @@ begin
                   // Text
                   ARect := Rect(X, Y, AWidth, Y+LabelHeight);
 
-                  TPaintBox(Sender).Canvas.TextRect(ARect, ARect.Left, 0, Text, Style);
+                  TextRect(ARect, ARect.Left, ARect.Top, Text);
                 end;
 
               // Next
@@ -5573,6 +5580,7 @@ var
   I, Index, IndexTrack: integer;
   Item: TDrawItem;
   ArrayIDs: TStringArray;
+  IsContained: boolean;
 begin
   // Length
   SetLength(DrawItems, 0);
@@ -5613,10 +5621,12 @@ begin
             begin
               IndexTrack := GetTrack(ArrayIDs[I]);
 
-              if (IndexTrack <> -1) and (NewItems.Find(Tracks[IndexTrack].AlbumID) = -1) and (Tracks[IndexTrack].AlbumID <> '') then
-                NewItems.AddValue( Tracks[IndexTrack].AlbumID );
+              IsContained := TArrayUtils<string>.Contains(Tracks[IndexTrack].AlbumID, NewItems);
+              if (IndexTrack <> -1) and (Tracks[IndexTrack].AlbumID <> '')
+                 and not IsContained then
+                NewItems := NewItems + [Tracks[IndexTrack].AlbumID];
 
-              if NewItems.Count >= HomeColumns then
+              if Length(NewItems) >= HomeColumns then
                 Break;
             end;
         end;
@@ -5632,9 +5642,9 @@ begin
           for I := 0 to High(ArrayIDs) do
             if GetTrack(ArrayIDs[I]) <> -1 then
               begin
-                NewItems.AddValue(ArrayIDs[I]);
+                NewItems := NewItems + [ArrayIDs[I]];
 
-                if NewItems.Count >= HomeColumns then
+                if Length(NewItems) >= HomeColumns then
                   Break;
               end;
         end;
@@ -5651,9 +5661,9 @@ begin
           for I := 0 to High(ArrayIDs) do
             if GetTrack(ArrayIDs[I]) <> -1 then
               begin
-                NewItems.AddValue(ArrayIDs[I]);
+                NewItems := NewItems + [ArrayIDs[I]];
 
-                if NewItems.Count >= HomeColumns then
+                if Length(NewItems) >= HomeColumns then
                   Break;
               end;
         end;
@@ -5665,9 +5675,9 @@ begin
       for I := 0 to High(Playlists) do
         if Playlists[I].PlaylistType = '' then
           begin
-            NewItems.AddValue(Playlists[I].ID);
+            NewItems := NewItems + [Playlists[I].ID];
 
-            if NewItems.Count >= HomeColumns then
+            if Length(NewItems) >= HomeColumns then
               Break;
           end;
       AddHomeIDs(HomeColumns*3, TDataSource.Playlists);
@@ -5683,9 +5693,9 @@ begin
           for I := 0 to High(ArrayIDs) do
             if GetTrack(ArrayIDs[I]) <> -1 then
               begin
-                NewItems.AddValue(ArrayIDs[I]);
+                NewItems := NewItems + [ArrayIDs[I]];
 
-                if NewItems.Count >= HomeColumns then
+                if Length(NewItems) >= HomeColumns then
                   Break;
               end;
         end;
@@ -5997,7 +6007,7 @@ begin
         else
           begin
             Brush.Style := bsSolid;
-            Brush.Color := ChangeColorSat(ItemColor, 20);
+            Brush.Color := Brush.Color.ChangeSaturation(20);
 
             RoundRect( TempRect, CoverRadius, CoverRadius );
           end;
@@ -6059,7 +6069,7 @@ begin
         else
           begin
             Brush.Style := bsSolid;
-            Brush.Color := ChangeColorSat(ItemColor, 20);
+            Brush.Color := Brush.Color.ChangeSaturation(20);
 
             RoundRect( TempRect, CoverRadius, CoverRadius );
           end;
@@ -6082,7 +6092,7 @@ procedure TMain.RenderVisualisations;
 var
   FFTFata: TFFTData;
 begin
-  if (Player = nil) or (not Player.IsFileOpen) or (Player.PlayStatus <> TPlayStatus.psPlaying) then
+  if (Player = nil) or (not Player.IsFileOpen) or (Player.PlayStatus <> TPlayStatus.Playing) then
     Exit;
 
   BASS_ChannelGetData(Player.Stream, @FFTFata, BASS_DATA_FFT1024);
@@ -6378,7 +6388,7 @@ end;
 
 function TMain.Playing: boolean;
 begin
-  Result := Player.PlayStatus in [TPlayStatus.psPlaying, TPlayStatus.psStalled];
+  Result := Player.PlayStatus in [TPlayStatus.Playing, TPlayStatus.Stalled];
 end;
 
 procedure TMain.PlaySong(ID: string; StartPlay: boolean);
@@ -6408,7 +6418,7 @@ begin
   AudioUpdate.Enabled:=false;
 
   // UI
-  SetPlayIcon(psStalled);
+  SetPlayIcon(TPlayStatus.Stalled);
   Application.ProcessMessages;
 
   // Cloud
@@ -6507,10 +6517,10 @@ end;
 procedure TMain.SetPlayIcon(AStatus: TPlayStatus);
 begin
   case AStatus of
-    TPlayStatus.psPaused,
-    TPlayStatus.psStopped: Music_Play.Caption:=ICON_PLAY;
-    TPlayStatus.psPlaying: Music_Play.Caption:=ICON_PAUSED;
-    TPlayStatus.psStalled: Music_Play.Caption:=ICON_BUFFERING;
+    TPlayStatus.Paused,
+    TPlayStatus.Stopped: Music_Play.Caption:=ICON_PLAY;
+    TPlayStatus.Playing: Music_Play.Caption:=ICON_PAUSED;
+    TPlayStatus.Stalled: Music_Play.Caption:=ICON_BUFFERING;
   end;
 
   UpdatePopupPlayIcons;

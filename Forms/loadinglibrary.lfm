@@ -10,19 +10,20 @@ object LoadLib: TLoadLib
   ClientWidth = 500
   LCLVersion = '4.8.0.0'
   OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
   object Label1: TLabel
     Left = 24
-    Height = 17
+    Height = 15
     Top = 88
-    Width = 255
+    Width = 198
     Caption = 'Now loading your iBroadcast library...'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 80
-    Height = 28
+    Height = 32
     Top = 24
-    Width = 189
+    Width = 169
     Caption = 'Cods iBroadcast'
     Font.Height = -24
     ParentColor = False
@@ -30,9 +31,9 @@ object LoadLib: TLoadLib
   end
   object Label3: TLabel
     Left = 80
-    Height = 17
+    Height = 15
     Top = 48
-    Width = 186
+    Width = 141
     Caption = 'Powered by iBroadcast API'
     ParentColor = False
   end
@@ -157,9 +158,9 @@ object LoadLib: TLoadLib
   end
   object Status_Text: TLabel
     Left = 24
-    Height = 17
+    Height = 15
     Top = 120
-    Width = 130
+    Width = 100
     Caption = 'Sending request...'
     Font.Style = [fsBold]
     ParentColor = False

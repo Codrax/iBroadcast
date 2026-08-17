@@ -28,6 +28,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ButtonsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Panel7Click(Sender: TObject);
     procedure Visualisation_PlayerPaint(Sender: TObject);
   private
 
@@ -85,6 +86,11 @@ procedure TPopupPlay.FormShow(Sender: TObject);
 begin
   if not Visualisation_Player.Visible then
     ClientHeight:=Panel7.BoundsRect.Bottom;
+end;
+
+procedure TPopupPlay.Panel7Click(Sender: TObject);
+begin
+
 end;
 
 procedure TPopupPlay.Visualisation_PlayerPaint(Sender: TObject);

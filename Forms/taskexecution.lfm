@@ -8,12 +8,13 @@ object TaskExec: TTaskExec
   Caption = 'Executing task...'
   ClientHeight = 150
   ClientWidth = 500
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
   object Title: TLabel
     Left = 16
-    Height = 30
+    Height = 32
     Top = 24
-    Width = 193
+    Width = 186
     Caption = 'Doing something'
     Font.Height = -24
     ParentColor = False
@@ -21,9 +22,9 @@ object TaskExec: TTaskExec
   end
   object Label3: TLabel
     Left = 16
-    Height = 17
+    Height = 15
     Top = 56
-    Width = 215
+    Width = 174
     Caption = 'Please wait until this task finishes'
     ParentColor = False
   end

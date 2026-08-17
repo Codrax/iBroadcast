@@ -8,7 +8,8 @@ object CreatePlaylist: TCreatePlaylist
   Caption = 'Information about "%S"'
   ClientHeight = 400
   ClientWidth = 650
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
   object Button2: TButton
     Left = 499
     Height = 41
@@ -17,8 +18,8 @@ object CreatePlaylist: TCreatePlaylist
     Anchors = [akRight, akBottom]
     Caption = '💾 Save'
     Default = True
-    OnMouseUp = Button2MouseUp
     TabOrder = 0
+    OnMouseUp = Button2MouseUp
   end
   object Save_Button: TButton
     Left = 368
@@ -33,9 +34,9 @@ object CreatePlaylist: TCreatePlaylist
   end
   object Title: TLabel
     Left = 16
-    Height = 30
+    Height = 32
     Top = 24
-    Width = 219
+    Width = 201
     Caption = 'Create new playlist'
     Font.Height = -24
     ParentColor = False
@@ -43,15 +44,15 @@ object CreatePlaylist: TCreatePlaylist
   end
   object Label3: TLabel
     Left = 16
-    Height = 17
+    Height = 15
     Top = 56
-    Width = 240
+    Width = 196
     Caption = 'Enter the detalies of your new playlist'
     ParentColor = False
   end
   object Playlist_Name: TEdit
     Left = 16
-    Height = 27
+    Height = 25
     Top = 112
     Width = 400
     BorderStyle = bsNone
@@ -63,17 +64,17 @@ object CreatePlaylist: TCreatePlaylist
   end
   object Label1: TLabel
     Left = 16
-    Height = 17
+    Height = 15
     Top = 88
-    Width = 38
+    Width = 32
     Caption = 'Name'
     ParentColor = False
   end
   object Label4: TLabel
     Left = 16
-    Height = 17
+    Height = 15
     Top = 160
-    Width = 72
+    Width = 60
     Caption = 'Description'
     ParentColor = False
   end

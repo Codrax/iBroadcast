@@ -1,15 +1,17 @@
 unit BroadcastAPI;
 
 {$SCOPEDENUMS ON}
-{$mode Delphi}
+{$IFDEF FPC}
+  {$MODE DELPHI}
+{$ENDIF}
 
 interface
   uses
     // Required Units
     SysUtils, Classes, Graphics, IdSSLOpenSSL,
     IdHTTP, fpjson, Clipbrd, DateUtils, Cod.Types, fileutil,
-    Cod.VarHelpers, Cod.ArrayHelpers, Forms, Cod.Files,
-    jsonparser, Dialogs, Cod.VersionUpdate, IdURI;
+    Cod.ArrayHelpers, Forms, Cod.Files,
+    jsonparser, Dialogs, Cod.Version, IdURI, Cod.JSON, Cod.JSON.Utils;
 
   type
     // Cardinals
@@ -405,7 +407,7 @@ const
   STREAMING_ENDPOINT = 'https://streaming.ibroadcast.com';
 
   API_VERSION = '1.0.0';
-  APP_VERSION: TVersionRec = (Major:1; Minor:1; Maintenance:0);
+  APP_VERSION: TVersion = (Major:1; Minor:1; Maintenance:0; Build: 0);
 
   // Artwork Store
   ART_EXT = '.jpeg';
@@ -850,8 +852,9 @@ begin
   // Search
   Result := [];
   for I := 0 to High(Playlists) do
-    if Playlists[I].TracksID.Find(ID) <> -1 then
-      Result.AddValue(Playlists[I].ID);
+
+    if TArrayUtils<string>.Contains(ID, Playlists[I].TracksID) then
+      Result := Result + [Playlists[I].ID];
 end;
 
 function TrackRatingToLikedPlaylist(ID: string): boolean;
@@ -866,7 +869,7 @@ begin
 
   if (Index <> -1) and (SongIndex <> -1) then
     begin
-      Fav := Playlists[Index].TracksID.Find(ID) <> -1;
+      Fav := TArrayUtils<string>.Contains(ID, Playlists[Index].TracksID);
       if ValueRatingMode then
         IsFav := Tracks[SongIndex].Rating = 10
       else
@@ -875,9 +878,9 @@ begin
       if IsFav <> Fav then
         begin
           if IsFav then
-            Result := PreappendToPlaylist(Playlists[Index].ID, MakeStrArray([ID]))
+            Result := PreappendToPlaylist(Playlists[Index].ID, [ID])
           else
-            Result := DeleteFromPlaylist(Playlists[Index].ID, MakeStrArray([ID]));
+            Result := DeleteFromPlaylist(Playlists[Index].ID, [ID]);
         end;
     end;
 end;
@@ -1074,7 +1077,7 @@ begin
 
   // Insert
   for I := 0 to High(Tracks) do
-    AllTracks.Insert(0, Tracks[I]);
+    AllTracks := [Tracks[I]] + AllTracks;
 
   // Change ex
   Result := ChangePlayList(ID, AllTracks);
@@ -1141,7 +1144,7 @@ begin
   // Delete Tracks
   AllTracks := Playlists[GetPlaylist(ID)].TracksID;
   for I := 0 to High(Tracks) do
-    AllTracks.Delete(AllTracks.Find(Tracks[I]));
+    TArrayUtils<string>.DeleteValue(Tracks[I], AllTracks);
 
   // Get Tracks
   ATracks := '';
@@ -1192,7 +1195,7 @@ begin
   // Delete invalid enteries
   for I := High(AllTracks) downto 0 do
     if GetTrack(AllTracks[I]) = -1 then
-      AllTracks.Delete(I);
+       TArrayUtils<string>.Delete(I, AllTracks);
 
   // Get Tracks
   ATracks := '';
@@ -1412,7 +1415,7 @@ begin
   ATracks := [];
   for I := 0 to High(Tracks) do
     if Tracks[I].IsInTrash then
-      ATracks.AddValue(Tracks[I].ID);
+      ATracks := ATracks + [Tracks[I].ID];
 
   // Empty
   Result := EmptyTrash(ATracks);
@@ -1420,7 +1423,7 @@ end;
 
 function RestoreTrack(ID: string): boolean;
 begin
-  Result := RestoreTracks(MakeStrArray([ID]));
+  Result := RestoreTracks([ID]);
 end;
 
 function RestoreAlbum(ID: string): boolean;
@@ -1447,7 +1450,7 @@ end;
 
 function DeleteTrack(ID: string): boolean;
 begin
-  Result := DeleteTracks(MakeStrArray([ID]));
+  Result := DeleteTracks([ID]);
 end;
 
 function DeleteAlbum(ID: string): boolean;
@@ -1487,7 +1490,7 @@ var
   JSONValue: TJSONObject;
 
   PlayMap: TStringArray;
-  PlayCount: TIntArray;
+  PlayCount: TArray<integer>;
 
   Day: TDate;
 
@@ -1504,12 +1507,12 @@ begin
 
   for I := 0 to High(Items) do
     begin
-      Index := PlayMap.Find(Items[I].TrackID);
+      Index := TArrayUtils<string>.GetIndex(Items[I].TrackID, PlayMap);
 
       if Index = -1 then
         begin
-          PlayMap.AddValue(Items[I].TrackID);
-          PlayCount.AddValue(1);
+          PlayMap := PlayMap + [Items[I].TrackID];
+          PlayCount := PlayCount + [1];
         end
       else
         begin
@@ -1738,7 +1741,7 @@ begin
             Albums[Index].LoadFrom( JSONData, Name );
 
             // Invalid entry, delete from index
-            if Albums[Index].TracksID.Count = 0 then
+            if Length(Albums[Index].TracksID) = 0 then
               SetLength( Albums, Index );
           end;
 
@@ -1774,7 +1777,7 @@ begin
             Artists[Index].LoadFrom( JSONData, Name );
 
             // Invalid entry, delete from index
-            if Artists[Index].TracksID.Count = 0 then
+            if Length(Artists[Index].TracksID) = 0 then
               SetLength( Artists, Index );
           end;
 
@@ -1839,7 +1842,7 @@ begin
       Index := GetGenre(Name);
       if Index <> -1 then
         begin
-          Genres[Index].TracksID.AddValue( Tracks[I].ID );
+          Genres[Index].TracksID := Genres[Index].TracksID + [Tracks[I].ID];
           continue;
         end;
 
@@ -2525,7 +2528,7 @@ begin
       AID := SONGS.Items[I].AsString;
       // Validate
       if GetTrack(AID) <> -1 then
-        TracksID.AddValue( AID );
+        TracksID := TracksID + [AID];
     end;
 
   // Data 2
@@ -2631,7 +2634,7 @@ begin
       AID := SONGS.Items[I].AsString;
       // Validate
       if GetTrack(AID) <> -1 then
-        TracksID.AddValue( AID );
+        TracksID := TracksID + [AID];
     end;
 
   // Data 2
@@ -2733,7 +2736,7 @@ begin
       AID := SONGS.Items[I].AsString;
       // Validate
       if GetTrack(AID) <> -1 then
-        TracksID.AddValue( AID );
+        TracksID := TracksID + [AID];
     end;
 
   // ?

@@ -148,7 +148,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="Forms;C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Codrut Library Pack;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons"/>
+      <OtherUnitFiles Value="Forms;C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

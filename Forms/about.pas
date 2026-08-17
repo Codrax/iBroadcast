@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, StdCtrls,
-  ExtCtrls, lclintf, BroadcastAPI, Math;
+  ExtCtrls, lclintf, BroadcastAPI, Math, Cod.Forms;
 
 type
 
@@ -98,6 +98,10 @@ end;
 
 procedure TAboutDialog.FormCreate(Sender: TObject);
 begin
+  {$IFDEF MSWINDOWS}
+  CenterFormInForm(Self, Application.MainForm);
+  {$ENDIF}
+
   // Ver
   App_Version_Label.Caption := APP_VERSION.ToString;
 

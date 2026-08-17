@@ -5,7 +5,8 @@ unit taskexecution;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ComCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ComCtrls,
+  Cod.Forms;
 
 type
 
@@ -15,6 +16,7 @@ type
     Title: TLabel;
     Label3: TLabel;
     Progress: TProgressBar;
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -27,6 +29,15 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TTaskExec }
+
+procedure TTaskExec.FormCreate(Sender: TObject);
+begin
+  {$IFDEF MSWINDOWS}
+  CenterFormInForm(Self, Application.MainForm);
+  {$ENDIF}
+end;
 
 end.
 
