@@ -31,12 +31,6 @@ iBroadcast
 - Help center to quicly get started
 - And more!
 
-## Dependencies
-- Indy Internet Direct
-- [Bass Audio Library](https://github.com/TDDung/Delphi-BASS)
-- UniqueInstance (Install from Lazarus online package manager)
-- Units in the `dependencies` folder
-
 ## Other
 ### Parameters
 | Parameter  | Description |
@@ -55,3 +49,10 @@ iBroadcast
 ![app_ibroadcastlinux2](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/0317aa13-98b8-4b1e-bc9e-1efeefcc67d7)
 ![app_ibroadcastlinux3](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/1d51e4cf-055d-41cc-b75f-d72a1dc9fc2c)
 ![app_ibroadcastlinux](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/910eca7a-6844-4265-9e05-ceb21da1f0e3)
+
+
+## Dependencies
+- Indy Internet Direct
+- [Bass Audio Library](https://github.com/TDDung/Delphi-BASS)
+- UniqueInstance (Install from Lazarus online package manager)
+- Units in the `dependencies` folder
