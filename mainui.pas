@@ -4473,9 +4473,9 @@ begin
   AppData := IncludeTrailingPathDelimiter(AFolder + 'Codrut Software\');
   if not DirectoryExists(AppData) then
     MkDir(AppData);
-  AppData := IncludeTrailingPathDelimiter(AFolder + 'Codrut Software\iBroadcast');
+  AppData := IncludeTrailingPathDelimiter(AppData + 'iBroadcast');
   {$ELSE}
-  AppData := IncludeTrailingPathDelimiter(AFolder + 'cod-ibroadcast');
+  AppData := IncludeTrailingPathDelimiter(AFolder + APP_IDENTIFIER);
   {$ENDIF}
 
   if not DirectoryExists(AppData) then
