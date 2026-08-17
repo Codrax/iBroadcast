@@ -21,11 +21,10 @@ An unofficial iBroadcast client for Debian Linux developed in Lazarus Delphi.
 - And more!
 
 ## Dependencies
-- Cod Library Pack units
 - Indy Internet Direct
-- Libssl (Important: Version 1.0)
 - [Bass Audio Library](https://github.com/TDDung/Delphi-BASS)
 - UniqueInstance (Install from Lazarus online package manager)
+- Units in the `dependencies` folder
 
 ## Other
 ### Parameters
