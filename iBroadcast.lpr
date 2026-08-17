@@ -44,7 +44,7 @@ begin
         IsOffline := true;
 
       if Param = '--help' then
-        ShellRun(URL_HELP, true);
+        ShellRun(URL_HELP);
     end;
 
 

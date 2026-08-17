@@ -70,7 +70,8 @@ uses
   MainUI;
 
 
-
+{$R-}
+{$Q-}
 function GetHashBytes(
   const AData: string
 ): TBytes;
@@ -507,7 +508,7 @@ end;
 
 procedure TLogin.MenuItem2Click(Sender: TObject);
 begin
-  ShellRun(URL_HELP, true);
+  ShellRun(URL_HELP);
 end;
 
 procedure TLogin.DoSetError;
@@ -616,7 +617,7 @@ end;
 
 procedure TLogin.MenuItem1Click(Sender: TObject);
 begin
-  ShellRun('https://media.ibroadcast.com/', true);
+  ShellRun('https://media.ibroadcast.com/');
 end;
 
 procedure TLogin.Button1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -652,8 +653,7 @@ begin
 
     // URL
     ShellRun(
-      V2_Login_AuthorizeURL(OAuth2State, ACodeChallenge),
-      true
+      V2_Login_AuthorizeURL(OAuth2State, ACodeChallenge)
     );
   end else begin
     TButton(Sender).Tag := 0;

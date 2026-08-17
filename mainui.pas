@@ -3643,7 +3643,7 @@ end;
 
 procedure TMain.MenuItem2Click(Sender: TObject);
 begin
-  ShellRun(URL_HELP, true);
+  ShellRun(URL_HELP);
 end;
 
 procedure TMain.Music_ArtistClick(Sender: TObject);

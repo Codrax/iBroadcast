@@ -23,7 +23,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
+            <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -66,7 +66,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
+            <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -179,7 +179,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="C:/Users/Codrut/Sync/Development/Lazarus/Components/Indy/Lib/System/;../../Sync/Development/Lazarus/Components/Indy/Lib/Protocols;../../Sync/Development/Lazarus/Components/Indy/Lib/Security;../../Sync/Development/Lazarus/Components/Indy/Lib/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
+      <OtherUnitFiles Value="../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Core;../../Sync/Development/Lazarus/Components/Delphi-BASS-main/BassVersions/BASS/Add-ons;../Cod-Library-Pack/source;units;Forms"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
