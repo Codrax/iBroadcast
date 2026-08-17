@@ -362,347 +362,6 @@ object Main: TMain
             end
           end
         end
-        object Page_Account: TPanel
-          Left = 0
-          Height = 640
-          Top = 0
-          Width = 816
-          Align = alClient
-          BevelOuter = bvNone
-          ClientHeight = 640
-          ClientWidth = 816
-          Color = clBtnFace
-          FullRepaint = False
-          ParentBackground = False
-          ParentColor = False
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 3
-          object ScrollBox2: TScrollBox
-            Left = 0
-            Height = 640
-            Top = 0
-            Width = 816
-            HorzScrollBar.Page = 355
-            VertScrollBar.Page = 640
-            Align = alClient
-            BorderStyle = bsNone
-            ClientHeight = 640
-            ClientWidth = 799
-            ParentBackground = False
-            TabOrder = 0
-            object Label20: TLabel
-              Left = 8
-              Height = 21
-              Top = 64
-              Width = 99
-              Caption = 'Email adress:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label21: TLabel
-              Cursor = crHandPoint
-              Left = 176
-              Height = 21
-              Top = 59
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-              ParentShowHint = False
-              OnClick = Label21Click
-            end
-            object Label22: TLabel
-              Left = 4
-              Height = 37
-              Top = 24
-              Width = 166
-              Caption = 'Your account'
-              Font.Height = -27
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label23: TLabel
-              Left = 8
-              Height = 21
-              Top = 88
-              Width = 107
-              Caption = 'Creation date:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label24: TLabel
-              Left = 176
-              Height = 21
-              Top = 88
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label25: TLabel
-              Left = 8
-              Height = 21
-              Top = 148
-              Width = 131
-              Caption = 'Verification date:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label26: TLabel
-              Left = 176
-              Height = 21
-              Top = 148
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label27: TLabel
-              Left = 8
-              Height = 21
-              Top = 128
-              Width = 51
-              Caption = 'Status:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label28: TLabel
-              Left = 72
-              Height = 21
-              Top = 128
-              Width = 68
-              Caption = '  verified  '
-              Color = clLime
-              Font.Color = clWhite
-              Font.Height = -16
-              ParentColor = False
-              ParentFont = False
-              Transparent = False
-            end
-            object Label29: TLabel
-              Left = 8
-              Height = 37
-              Top = 200
-              Width = 126
-              Caption = 'Your stats'
-              Font.Height = -27
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label30: TLabel
-              Left = 8
-              Height = 21
-              Top = 240
-              Width = 51
-              Caption = 'Tracks:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label31: TLabel
-              Left = 176
-              Height = 21
-              Top = 240
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label32: TLabel
-              Left = 8
-              Height = 21
-              Top = 264
-              Width = 62
-              Caption = 'Albums:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label33: TLabel
-              Left = 176
-              Height = 21
-              Top = 264
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label34: TLabel
-              Left = 8
-              Height = 21
-              Top = 288
-              Width = 52
-              Caption = 'Artists:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label35: TLabel
-              Left = 176
-              Height = 21
-              Top = 288
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label36: TLabel
-              Left = 8
-              Height = 21
-              Top = 312
-              Width = 67
-              Caption = 'Playlists:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label37: TLabel
-              Left = 176
-              Height = 21
-              Top = 312
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label38: TLabel
-              Left = 8
-              Height = 21
-              Top = 352
-              Width = 86
-              Caption = 'Total plays:'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label39: TLabel
-              Left = 176
-              Height = 21
-              Top = 352
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label40: TLabel
-              Left = 8
-              Height = 21
-              Top = 392
-              Width = 51
-              Caption = 'Bitrate'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label41: TLabel
-              Left = 176
-              Height = 21
-              Top = 392
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label42: TLabel
-              Left = 8
-              Height = 21
-              Top = 416
-              Width = 83
-              Caption = 'One queue'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label43: TLabel
-              Left = 176
-              Height = 21
-              Top = 416
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label44: TLabel
-              Left = 8
-              Height = 21
-              Top = 442
-              Width = 81
-              Caption = 'Beta tester'
-              Font.Height = -16
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label45: TLabel
-              Left = 176
-              Height = 21
-              Top = 442
-              Width = 65
-              Caption = 'unknown'
-              ParentColor = False
-            end
-            object Label46: TLabel
-              Left = 8
-              Height = 37
-              Top = 496
-              Width = 235
-              Caption = 'Your subscriptions'
-              Font.Height = -27
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Label47: TLabel
-              Left = 8
-              Height = 21
-              Top = 536
-              Width = 320
-              Caption = 'You are not subscribed to iBroadcast premium'
-              ParentColor = False
-            end
-            object Button6: TButton
-              Left = 8
-              Height = 45
-              Top = 568
-              Width = 280
-              Caption = '🌟 About iBroadcast premium'
-              TabOrder = 0
-              OnClick = Button6Click
-            end
-            object Label48: TLabel
-              Left = 8
-              Height = 37
-              Top = 640
-              Width = 230
-              Caption = 'Logged in devices'
-              Font.Height = -27
-              Font.Style = [fsBold]
-              ParentColor = False
-              ParentFont = False
-            end
-            object Account_Devices: TListBox
-              Left = 8
-              Height = 197
-              Top = 688
-              Width = 347
-              Items.Strings = (
-                'Device 1'
-                'Device 2'
-                'Device 3'
-              )
-              ItemHeight = 21
-              TabOrder = 1
-            end
-          end
-        end
         object Page_ToolbarContainer: TPanel
           Left = 0
           Height = 640
@@ -1656,6 +1315,323 @@ object Main: TMain
               OnMouseMove = DrawingBoxMouseMove
               OnMouseUp = DrawingBoxMouseUp
               OnPaint = DrawingBoxPaint
+            end
+          end
+        end
+        object Page_Account: TPanel
+          Left = 0
+          Height = 640
+          Top = 0
+          Width = 816
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 640
+          ClientWidth = 816
+          Color = clBtnFace
+          FullRepaint = False
+          ParentBackground = False
+          ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
+          object ScrollBox2: TScrollBox
+            Left = 0
+            Height = 640
+            Top = 0
+            Width = 816
+            HorzScrollBar.Page = 328
+            VertScrollBar.Page = 613
+            Align = alClient
+            BorderStyle = bsNone
+            ClientHeight = 640
+            ClientWidth = 816
+            ParentBackground = False
+            TabOrder = 0
+            object Label20: TLabel
+              Left = 8
+              Height = 21
+              Top = 64
+              Width = 99
+              Caption = 'Email adress:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label21: TLabel
+              Cursor = crHandPoint
+              Left = 176
+              Height = 21
+              Top = 59
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+              ParentShowHint = False
+              OnClick = Label21Click
+            end
+            object Label22: TLabel
+              Left = 4
+              Height = 37
+              Top = 24
+              Width = 166
+              Caption = 'Your account'
+              Font.Height = -27
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label23: TLabel
+              Left = 8
+              Height = 21
+              Top = 88
+              Width = 107
+              Caption = 'Creation date:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label24: TLabel
+              Left = 176
+              Height = 21
+              Top = 88
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label25: TLabel
+              Left = 8
+              Height = 21
+              Top = 148
+              Width = 131
+              Caption = 'Verification date:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label26: TLabel
+              Left = 176
+              Height = 21
+              Top = 148
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label27: TLabel
+              Left = 8
+              Height = 21
+              Top = 128
+              Width = 51
+              Caption = 'Status:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label28: TLabel
+              Left = 72
+              Height = 21
+              Top = 128
+              Width = 68
+              Caption = '  verified  '
+              Color = clLime
+              Font.Color = clWhite
+              Font.Height = -16
+              ParentColor = False
+              ParentFont = False
+              Transparent = False
+            end
+            object Label29: TLabel
+              Left = 8
+              Height = 37
+              Top = 200
+              Width = 126
+              Caption = 'Your stats'
+              Font.Height = -27
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label30: TLabel
+              Left = 8
+              Height = 21
+              Top = 240
+              Width = 51
+              Caption = 'Tracks:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label31: TLabel
+              Left = 176
+              Height = 21
+              Top = 240
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label32: TLabel
+              Left = 8
+              Height = 21
+              Top = 264
+              Width = 62
+              Caption = 'Albums:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label33: TLabel
+              Left = 176
+              Height = 21
+              Top = 264
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label34: TLabel
+              Left = 8
+              Height = 21
+              Top = 288
+              Width = 52
+              Caption = 'Artists:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label35: TLabel
+              Left = 176
+              Height = 21
+              Top = 288
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label36: TLabel
+              Left = 8
+              Height = 21
+              Top = 312
+              Width = 67
+              Caption = 'Playlists:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label37: TLabel
+              Left = 176
+              Height = 21
+              Top = 312
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label38: TLabel
+              Left = 8
+              Height = 21
+              Top = 352
+              Width = 86
+              Caption = 'Total plays:'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label39: TLabel
+              Left = 176
+              Height = 21
+              Top = 352
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label40: TLabel
+              Left = 8
+              Height = 21
+              Top = 392
+              Width = 51
+              Caption = 'Bitrate'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label41: TLabel
+              Left = 176
+              Height = 21
+              Top = 392
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label42: TLabel
+              Left = 8
+              Height = 21
+              Top = 416
+              Width = 83
+              Caption = 'One queue'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label43: TLabel
+              Left = 176
+              Height = 21
+              Top = 416
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label44: TLabel
+              Left = 8
+              Height = 21
+              Top = 442
+              Width = 81
+              Caption = 'Beta tester'
+              Font.Height = -16
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label45: TLabel
+              Left = 176
+              Height = 21
+              Top = 442
+              Width = 65
+              Caption = 'unknown'
+              ParentColor = False
+            end
+            object Label46: TLabel
+              Left = 8
+              Height = 37
+              Top = 496
+              Width = 235
+              Caption = 'Your subscriptions'
+              Font.Height = -27
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object Label47: TLabel
+              Left = 8
+              Height = 21
+              Top = 536
+              Width = 320
+              Caption = 'You are not subscribed to iBroadcast premium'
+              ParentColor = False
+            end
+            object Button6: TButton
+              Left = 8
+              Height = 45
+              Top = 568
+              Width = 280
+              Caption = '🌟 About iBroadcast premium'
+              TabOrder = 0
+              OnClick = Button6Click
             end
           end
         end

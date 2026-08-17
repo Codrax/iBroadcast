@@ -262,27 +262,12 @@ interface
       function GetArtwork: TJPEGImage;
     end;
 
-    TSession = record
-      DeviceName: string;
-
-      Joinable: boolean;
-      Connected: boolean;
-
-      Client: string;
-      LastLogin: TDateTime;
-      Location: string;
-
-      (* Loading *)
-      procedure LoadFrom(JSON: TJSONObject);
-    end;
-
     // Arrays
     TArtists = TArray<TArtistItem>;
     TAlbums = TArray<TAlbumItem>;
     TTracks = TArray<TTrackItem>;
     TPlaylists = TArray<TPlaylistItem>;
     TGenres = TArray<TGenreItem>;
-    TSessions = TArray<TSession>;
 
   // Get Data
   function GetTrack(ID: string): integer;
@@ -571,7 +556,6 @@ var
   // Library
   LibraryStatus: TLibraryStatus;
   Account: TAccount;
-  Sessions: TSessions;
 
   Tracks: TTracks;
   Albums: TAlbums;
@@ -1618,17 +1602,6 @@ begin
     JSONAccount := JSONValue.Get('user', EmptyJSON);
 
     Account.LoadFrom( JSONAccount );
-
-    // Sessions
-    SetWorkStatus('Loading sessions...');
-    JSONSessions := JSONAccount.Get('session', EmptyJSON).Get('sessions', EmptyJSONArray);
-
-    SetLength( Sessions, JSONSessions.Count );
-
-    for I := 0 to JSONSessions.Count - 1 do
-      begin
-        Sessions[I].LoadFrom( JSONSessions.Items[I] as TJSONObject );
-      end;
   finally
     JSONValue.Free;
   end;
@@ -2763,27 +2736,6 @@ begin
     end;
 
   // ?
-end;
-
-{ TSession }
-
-procedure TSession.LoadFrom(JSON: TJSONObject);
-var
-  O: TJSONString;
-begin
-  SetDataWorkStatus('Loading session');
-
-  DeviceName := JSON.Get('device_name', '');
-
-  Joinable := JSON.Get('joinable', false);
-  Connected := JSON.Get('connected', false);
-
-  Client := JSON.Get('client', '');
-
-  LastLogin := StringToDateTime(JSON.Get('last_login', ''));
-
-  if JSON.Find('location', O) then
-    Location := O.AsString;
 end;
 
 end.

@@ -502,13 +502,11 @@ type
     Label45: TLabel;
     Label46: TLabel;
     Label47: TLabel;
-    Label48: TLabel;
     Label49: TLabel;
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Account_Devices: TListBox;
     MenuItem13: TMenuItem;
     Popup_ID: TMenuItem;
     Option_savequeue: TCheckBox;
@@ -6374,10 +6372,6 @@ begin
         Label47.Caption := 'You are subscribed to iBroadcast premium!'
       else
         Label47.Caption := 'You are not subscribed to iBroadcast premium';
-
-      Account_Devices.Clear;
-      for I := 0 to High(Sessions) do
-        Account_Devices.Items.Add(Sessions[I].DeviceName);
     end;
 
     TPage.Downloads: begin
