@@ -3,6 +3,17 @@ An unofficial iBroadcast client for Debian Linux developed in Lazarus Delphi.
 
 ### Also try [iBroadcast for Windows](https://github.com/Codrax/iBroadcast-For-Windows)!
 
+## Installation
+### Windows
+Download the installer from the [official website](https://www.codrutsoft.com/apps/ibroadcast/) and follow the setup instructions.
+
+### Linux
+```
+git clone https://github.com/Codrax/iBroadcast
+cd iBroadcast
+iBroadcast
+```
+
 ## Features
 - Play music
 - Rate your tracks, albums and artists
@@ -20,24 +31,28 @@ An unofficial iBroadcast client for Debian Linux developed in Lazarus Delphi.
 - Help center to quicly get started
 - And more!
 
-## Dependencies
-- Indy Internet Direct
-- [Bass Audio Library](https://github.com/TDDung/Delphi-BASS)
-- UniqueInstance (Install from Lazarus online package manager)
-- Units in the `dependencies` folder
-
 ## Other
 ### Parameters
 | Parameter  | Description |
 | ------------- | ------------- |
 | -offline  | Forces offline mode  |
-| -help  | Opens help center dialog  |
+| -help  | Opens help center  |
+| -tray  | Start hidden in system tray  |
 | -debug  | Enable application debugging features  |
 
 ## Images
+<img width="1862" height="1077" alt="image" src="https://github.com/user-attachments/assets/17212e95-bb03-4d91-8910-77d7f7265a33" />
+
 ![image](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/753e2cfa-e7e3-443f-93dc-fb004c9a9d01)
 ![player animation](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/8dab9b9c-cbd2-4720-a4a3-72e9bb93b0f1)
 ![app_ibroadcastlinux1](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/55e27c45-e262-40ce-bedc-365a86085fe7)
 ![app_ibroadcastlinux2](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/0317aa13-98b8-4b1e-bc9e-1efeefcc67d7)
 ![app_ibroadcastlinux3](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/1d51e4cf-055d-41cc-b75f-d72a1dc9fc2c)
 ![app_ibroadcastlinux](https://github.com/Codrax/iBroadcast-For-Linux/assets/68193064/910eca7a-6844-4265-9e05-ceb21da1f0e3)
+
+
+## Dependencies
+- Indy Internet Direct
+- [Bass Audio Library](https://github.com/TDDung/Delphi-BASS)
+- UniqueInstance (Install from Lazarus online package manager)
+- Units in the `dependencies` folder
