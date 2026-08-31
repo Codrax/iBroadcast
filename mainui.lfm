@@ -4,7 +4,7 @@ object Main: TMain
   Top = 149
   Width = 1151
   ActiveControl = Panel2
-  Caption = 'Codrut''s iBroadcast for Linux'
+  Caption = 'Codrut''s iBroadcast'
   ClientHeight = 900
   ClientWidth = 1151
   Constraints.MinHeight = 700
@@ -4578,7 +4578,7 @@ object Main: TMain
       OnClick = MenuItem2Click
     end
     object MenuItem4: TMenuItem
-      Caption = 'About iBroadcast for Linux'
+      Caption = 'About Cods iBroadcast'
       OnClick = MenuItem4Click
     end
   end

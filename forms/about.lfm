@@ -147,7 +147,7 @@ object AboutDialog: TAboutDialog
     Width = 388
     Alignment = taCenter
     AutoSize = False
-    Caption = 'iBroadcast for Linux'
+    Caption = 'iBroadcast'
     Font.Height = -19
     Font.Style = [fsBold]
     ParentColor = False
@@ -218,9 +218,9 @@ object AboutDialog: TAboutDialog
       '  https://github.com/Codrax'
       ''
       'Development enviroment'
-      '  Lazarus IDE for Linux'
+      '  Lazarus IDE'
       ''
-      'Copyright 2023 Codrut software'
+      'Copyright 2026 Codrut software'
     )
     ReadOnly = True
     ScrollBars = ssAutoVertical
