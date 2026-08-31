@@ -52,14 +52,12 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
-        <Filename Value="Forms/about.pas"/>
+        <Filename Value="forms/about.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="AboutDialog"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="About"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="51" Y="9"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="forms/createplaylistform.lfm"/>
@@ -70,14 +68,11 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
-        <Filename Value="Forms/createplaylistform.pas"/>
+        <Filename Value="forms/createplaylistform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="CreatePlaylist"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="9"/>
-        <CursorPos X="13" Y="59"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="forms/iteminformation.lfm"/>
@@ -89,8 +84,32 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
-        <Filename Value="Forms/iteminformation.pas"/>
+        <Filename Value="forms/iteminformation.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="ItemInfo"/>
+        <ResourceBaseClass Value="Form"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/about.pas"/>
+        <ComponentName Value="AboutDialog"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="About"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="51" Y="9"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/createplaylistform.pas"/>
+        <ComponentName Value="CreatePlaylist"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9"/>
+        <CursorPos X="13" Y="59"/>
+        <UsageCount Value="100"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Forms/iteminformation.pas"/>
         <ComponentName Value="ItemInfo"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
@@ -103,11 +122,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PopupPlayForm"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="27" Y="36"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
@@ -878,7 +896,7 @@
         <Filename Value="../Cod-Library-Pack/source/Cod.Helpers.pas"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="12" Y="22"/>
+        <CursorPos X="59" Y="27"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit>
