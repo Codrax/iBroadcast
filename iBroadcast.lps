@@ -18,12 +18,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainUI"/>
-        <TopLine Value="7"/>
-        <CursorPos X="40" Y="25"/>
+        <TopLine Value="973"/>
+        <CursorPos X="90" Y="917"/>
         <UsageCount Value="118"/>
         <Bookmarks Count="3">
-          <Item0 Y="6260" Left="1" Top="6229" ID="1"/>
-          <Item1 X="91" Y="4557" Left="1" Top="4527" ID="2"/>
+          <Item0 Y="6264" Left="1" Top="6233" ID="1"/>
+          <Item1 X="91" Y="4561" Left="1" Top="4531" ID="2"/>
           <Item2 X="40" Y="1061" Left="1" Top="1024" ID="3"/>
         </Bookmarks>
         <Loaded Value="True"/>
@@ -39,7 +39,7 @@
         <Filename Value="units/libdefine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="LibDefine"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="6"/>
         <CursorPos Y="39"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
@@ -55,9 +55,15 @@
         <Filename Value="forms/about.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="AboutDialog"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="About"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="53" Y="14"/>
         <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="forms/createplaylistform.lfm"/>
@@ -126,7 +132,6 @@
         <TopLine Value="13"/>
         <CursorPos X="27" Y="36"/>
         <UsageCount Value="11"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="Forms/shutdownform.pas"/>
@@ -199,8 +204,8 @@
       <Unit>
         <Filename Value="BroadcastAPI.pas"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="468"/>
-        <CursorPos X="31" Y="496"/>
+        <TopLine Value="374"/>
+        <CursorPos X="96" Y="399"/>
         <UsageCount Value="43"/>
         <Loaded Value="True"/>
       </Unit>
@@ -894,9 +899,8 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Helpers.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="59" Y="27"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="96" Y="31"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit>
@@ -1024,7 +1028,7 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="275"/>
         <CursorPos X="27" Y="294"/>
         <UsageCount Value="14"/>
@@ -1094,11 +1098,19 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
+      <Unit>
+        <Filename Value="units/unitinfo.pas"/>
+        <UnitName Value="UnitInfo"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="33" Y="16"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
     </Units>
     <OtherDefines Count="1">
       <Define0 Value="STRINGCOMPATABILITY"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="1">
+    <JumpHistory HistoryIndex="6">
       <Position>
         <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.pas"/>
         <Caret Line="290" Column="55" TopLine="275"/>
@@ -1106,6 +1118,26 @@
       <Position>
         <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.pas"/>
         <Caret Line="294" Column="27" TopLine="275"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="25" Column="40" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="3549" Column="3" TopLine="3538"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="681" Column="15" TopLine="653"/>
+      </Position>
+      <Position>
+        <Filename Value="mainui.pas"/>
+        <Caret Line="3553" Column="33" TopLine="3534"/>
+      </Position>
+      <Position>
+        <Filename Value="BroadcastAPI.pas"/>
+        <Caret Line="399" Column="96" TopLine="374"/>
       </Position>
     </JumpHistory>
     <RunParams>

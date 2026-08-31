@@ -3547,6 +3547,10 @@ end;
 procedure TMain.MenuTray_ExitClick(Sender: TObject);
 begin
   Application.Mainform.Close;
+
+  // In tray?
+  if not Visible then
+    Application.Mainform.Close;
 end;
 
 procedure TMain.MenuTray_ShowClick(Sender: TObject);

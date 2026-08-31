@@ -147,7 +147,7 @@ object AboutDialog: TAboutDialog
     Width = 388
     Alignment = taCenter
     AutoSize = False
-    Caption = 'iBroadcast'
+    Caption = 'Cods iBroadcast'
     Font.Height = -19
     Font.Style = [fsBold]
     ParentColor = False
