@@ -39,8 +39,9 @@
         <Filename Value="units/libdefine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="LibDefine"/>
-        <EditorIndex Value="6"/>
-        <CursorPos Y="39"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="113" Y="32"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
@@ -55,15 +56,11 @@
         <Filename Value="forms/about.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="AboutDialog"/>
-        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="About"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="53" Y="14"/>
-        <UsageCount Value="20"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="51" Y="9"/>
+        <UsageCount Value="22"/>
       </Unit>
       <Unit>
         <Filename Value="forms/createplaylistform.lfm"/>
@@ -78,7 +75,10 @@
         <IsPartOfProject Value="True"/>
         <ComponentName Value="CreatePlaylist"/>
         <ResourceBaseClass Value="Form"/>
-        <UsageCount Value="20"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9"/>
+        <CursorPos X="13" Y="59"/>
+        <UsageCount Value="100"/>
       </Unit>
       <Unit>
         <Filename Value="forms/iteminformation.lfm"/>
@@ -92,30 +92,6 @@
       <Unit>
         <Filename Value="forms/iteminformation.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="ItemInfo"/>
-        <ResourceBaseClass Value="Form"/>
-        <UsageCount Value="20"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/about.pas"/>
-        <ComponentName Value="AboutDialog"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="About"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="51" Y="9"/>
-        <UsageCount Value="22"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/createplaylistform.pas"/>
-        <ComponentName Value="CreatePlaylist"/>
-        <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="9"/>
-        <CursorPos X="13" Y="59"/>
-        <UsageCount Value="100"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Forms/iteminformation.pas"/>
         <ComponentName Value="ItemInfo"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
@@ -899,7 +875,7 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.Helpers.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <CursorPos X="96" Y="31"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
@@ -1028,7 +1004,7 @@
       </Unit>
       <Unit>
         <Filename Value="../Cod-Library-Pack/source/Cod.CodrutSoftware.API.Update.pas"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="275"/>
         <CursorPos X="27" Y="294"/>
         <UsageCount Value="14"/>
