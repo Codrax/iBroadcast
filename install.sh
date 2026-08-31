@@ -5,8 +5,19 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Required files:
+# shared-lib-linux/
+# runtime/
+# install/
+# iBroadcast
+# install.sh
+# uninstall.sh
+
 # Script
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+
+# Kill existing
+pkill ibroadcast
 
 # Prepare
 mkdir -p /usr/lib/ibroadcast/
